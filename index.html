@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Factory | Where Innovation Takes Shape</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --lime: #8BC34A;
+            --lime-bright: #9CCC65;
+            --lime-glow: rgba(139, 195, 74, 0.4);
+            --dark: #0a0a0a;
+            --darker: #050505;
+            --gray: #1a1a1a;
+            --gray-light: #2a2a2a;
+            --light-gray: #B8B8C0;
+            --white: #ffffff;
+        }
+
+        html {
+            scroll-behavior: auto;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--darker);
+            color: var(--white);
+            overflow-x: hidden;
+        }
+
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--darker);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .preloader-logo {
+            width: 120px;
+            opacity: 0;
+        }
+
+        .preloader-bar {
+            width: 200px;
+            height: 2px;
+            background: var(--gray);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .preloader-progress {
+            height: 100%;
+            width: 0%;
+            background: var(--lime);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            mix-blend-mode: difference;
+        }
+
+        .nav-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 0.25em;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        /* Hero - 3D Layered Intro */
+        .hero {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            perspective: 1000px;
+        }
+
+        .hero-bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(139, 195, 74, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139, 195, 74, 0.03) 1px, transparent 1px);
+            background-size: 80px 80px;
+            transform: perspective(500px) rotateX(60deg);
+            transform-origin: center top;
+        }
+
+        .hero-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .floating-shape {
+            position: absolute;
+            border: 1px solid var(--lime);
+            opacity: 0.15;
+        }
+
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 5%;
+            border-radius: 50%;
+        }
+
+        .shape-2 {
+            width: 200px;
+            height: 200px;
+            bottom: 20%;
+            right: 10%;
+            transform: rotate(45deg);
+        }
+
+        .shape-3 {
+            width: 150px;
+            height: 150px;
+            top: 30%;
+            right: 20%;
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        }
+
+        .hero-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            will-change: transform;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+        }
+
+        .hero-logo {
+            width: 200px;
+            margin-bottom: 2rem;
+            filter: drop-shadow(0 0 60px var(--lime-glow));
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        .hero-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(5rem, 18vw, 14rem);
+            letter-spacing: 0.02em;
+            line-height: 0.85;
+            position: relative;
+        }
+
+        .hero-title .char {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(100px) rotateX(-90deg);
+        }
+
+        .hero-title .line-1 {
+            color: var(--light-gray);
+            font-size: 0.35em;
+            letter-spacing: 0.4em;
+            display: block;
+            margin-bottom: 0.2em;
+        }
+
+        .hero-title .line-2 {
+            color: var(--lime);
+            text-shadow: 0 0 80px var(--lime-glow);
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+            font-weight: 300;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            color: var(--light-gray);
+            margin-top: 2rem;
+            opacity: 0;
+        }
+
+        .scroll-cta {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            opacity: 0;
+        }
+
+        .scroll-cta span {
+            font-size: 0.65rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--light-gray);
+        }
+
+        .scroll-mouse {
+            width: 24px;
+            height: 40px;
+            border: 2px solid var(--lime);
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .scroll-mouse::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 8px;
+            background: var(--lime);
+            border-radius: 2px;
+            animation: scrollWheel 2s infinite;
+        }
+
+        @keyframes scrollWheel {
+            0%, 100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            50% { opacity: 0.3; transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* Zoom Reveal Section */
+        .zoom-section {
+            height: 300vh;
+            position: relative;
+        }
+
+        .zoom-container {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .zoom-text {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 20vw;
+            color: var(--gray);
+            position: absolute;
+            white-space: nowrap;
+            will-change: transform;
+        }
+
+        .zoom-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 800px;
+            padding: 0 2rem;
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        .zoom-content h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 8vw, 5rem);
+            margin-bottom: 1.5rem;
+        }
+
+        .zoom-content h2 span {
+            color: var(--lime);
+        }
+
+        .zoom-content p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--light-gray);
+            font-weight: 300;
+        }
+
+        /* Horizontal Scroll Products */
+        .horizontal-section {
+            height: 400vh;
+            position: relative;
+            background: var(--dark);
+        }
+
+        .horizontal-container {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .horizontal-track {
+            display: flex;
+            height: 100%;
+            will-change: transform;
+        }
+
+        .h-panel {
+            min-width: 100vw;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem;
+            position: relative;
+        }
+
+        .h-panel-intro {
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+        }
+
+        .h-panel-intro h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(4rem, 12vw, 10rem);
+            text-align: center;
+        }
+
+        .h-panel-intro h2 span {
+            color: var(--lime);
+        }
+
+        .h-panel-intro .vertical-text {
+            position: absolute;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 15vw;
+            color: var(--gray);
+            opacity: 0.3;
+            writing-mode: vertical-lr;
+            right: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .product-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            max-width: 1400px;
+            width: 100%;
+            align-items: center;
+        }
+
+        .product-visual {
+            position: relative;
+            height: 500px;
+        }
+
+        .product-mockup {
+            width: 100%;
+            height: 100%;
+            background: var(--gray);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--gray-light);
+        }
+
+        .product-mockup::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: var(--gray-light);
+        }
+
+        .product-mockup-content {
+            padding: 50px 20px 20px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--gray) 100%);
+        }
+
+        .product-mockup-content img {
+            width: 60%;
+            opacity: 0.6;
+        }
+
+        .product-number {
+            position: absolute;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 25rem;
+            color: var(--lime);
+            opacity: 0.08;
+            top: -5rem;
+            left: -3rem;
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        .product-info h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            letter-spacing: 0.02em;
+        }
+
+        .product-tag {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--lime);
+            color: var(--dark);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-info p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--light-gray);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .product-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--lime);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--lime);
+            transition: gap 0.3s ease;
+        }
+
+        .product-link:hover {
+            gap: 1.5rem;
+        }
+
+        /* Stacking Cards Section */
+        .stack-section {
+            min-height: 300vh;
+            position: relative;
+            padding: 10rem 0;
+        }
+
+        .stack-header {
+            text-align: center;
+            margin-bottom: 15rem;
+            position: relative;
+            z-index: 100;
+        }
+
+        .stack-header h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(4rem, 10vw, 8rem);
+        }
+
+        .stack-header h2 span {
+            color: var(--lime);
+        }
+
+        .stack-cards {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .stack-card {
+            position: sticky;
+            top: 20vh;
+            background: var(--dark);
+            border: 1px solid var(--gray);
+            border-radius: 16px;
+            padding: 4rem;
+            margin-bottom: 3rem;
+            transform-origin: center top;
+        }
+
+        .stack-card:nth-child(1) { background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%); }
+        .stack-card:nth-child(2) { background: linear-gradient(135deg, #111111 0%, #1c1c1c 100%); }
+        .stack-card:nth-child(3) { background: linear-gradient(135deg, #131313 0%, #1e1e1e 100%); }
+
+        .stack-card-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 6rem;
+            color: var(--lime);
+            opacity: 0.2;
+            position: absolute;
+            top: 1rem;
+            right: 2rem;
+            line-height: 1;
+        }
+
+        .stack-card h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stack-card p {
+            color: var(--light-gray);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        /* Text Reveal Section */
+        .text-reveal-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reveal-bg-text {
+            position: absolute;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 30vw;
+            color: var(--gray);
+            opacity: 0.1;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        .text-reveal-content {
+            max-width: 1000px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .reveal-quote {
+            font-size: clamp(1.5rem, 4vw, 2.8rem);
+            line-height: 1.5;
+            font-weight: 300;
+        }
+
+        .reveal-quote .word {
+            display: inline-block;
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+
+        .reveal-quote .word.active {
+            opacity: 1;
+        }
+
+        .reveal-quote .highlight {
+            color: var(--lime);
+            font-weight: 600;
+        }
+
+        /* Stats Ticker */
+        .stats-ticker {
+            padding: 6rem 0;
+            background: var(--lime);
+            overflow: hidden;
+        }
+
+        .ticker-track {
+            display: flex;
+            animation: ticker 30s linear infinite;
+        }
+
+        .ticker-item {
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+            padding: 0 4rem;
+            white-space: nowrap;
+        }
+
+        .ticker-stat {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+
+        .ticker-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 5rem;
+            color: var(--dark);
+        }
+
+        .ticker-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--dark);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .ticker-divider {
+            width: 8px;
+            height: 8px;
+            background: var(--dark);
+            border-radius: 50%;
+        }
+
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Contact Section */
+        .contact {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-bg-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .contact-shape {
+            position: absolute;
+            border: 1px solid var(--lime);
+            opacity: 0.1;
+            border-radius: 50%;
+        }
+
+        .contact-shape-1 {
+            width: 600px;
+            height: 600px;
+            top: -200px;
+            right: -200px;
+        }
+
+        .contact-shape-2 {
+            width: 400px;
+            height: 400px;
+            bottom: -100px;
+            left: -100px;
+        }
+
+        .contact-content {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .contact-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(5rem, 15vw, 12rem);
+            line-height: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .contact-title .line {
+            display: block;
+            overflow: hidden;
+        }
+
+        .contact-title .word {
+            display: inline-block;
+        }
+
+        .contact-title span {
+            color: var(--lime);
+        }
+
+        .contact-subtitle {
+            font-size: 1.2rem;
+            color: var(--light-gray);
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        .contact-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--lime);
+            color: var(--dark);
+            padding: 1.5rem 3rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .contact-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: btnShine 3s infinite;
+        }
+
+        @keyframes btnShine {
+            0% { left: -100%; }
+            50%, 100% { left: 100%; }
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem;
+            border-top: 1px solid var(--gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 0.25em;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--light-gray);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--lime);
+        }
+
+        .footer-copy {
+            font-size: 0.75rem;
+            color: var(--light-gray);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .product-panel {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .product-visual {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .h-panel {
+                padding: 2rem;
+            }
+
+            .product-info h3 {
+                font-size: 2.5rem;
+            }
+
+            .stack-card {
+                padding: 2rem;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 2rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <img src="logo-color.png" alt="The Factory" class="preloader-logo">
+        <div class="preloader-bar">
+            <div class="preloader-progress"></div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#" class="nav-logo">THE FACTORY</a>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#products">Products</a>
+            <a href="#values">Values</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg-grid"></div>
+        <div class="hero-shapes">
+            <div class="floating-shape shape-1"></div>
+            <div class="floating-shape shape-2"></div>
+            <div class="floating-shape shape-3"></div>
+        </div>
+        <div class="hero-layer" data-speed="0.5">
+            <div class="hero-content">
+                <img src="logo-color.png" alt="The Factory" class="hero-logo">
+                <h1 class="hero-title">
+                    <span class="line-1">THE</span>
+                    <span class="line-2">FACTORY</span>
+                </h1>
+                <p class="hero-subtitle">Where Innovation Takes Shape</p>
+            </div>
+        </div>
+        <div class="scroll-cta">
+            <span>Explore</span>
+            <div class="scroll-mouse"></div>
+        </div>
+    </section>
+
+    <!-- Zoom Text Section -->
+    <section class="zoom-section" id="about">
+        <div class="zoom-container">
+            <div class="zoom-text">INNOVATE</div>
+            <div class="zoom-content">
+                <h2>We Build The <span>Future</span></h2>
+                <p>The Factory is the creative engine behind breakthrough digital products. As the parent company of MocapWork and DeployTemplate, we unite cutting-edge motion capture technology with streamlined deployment solutions—all under one innovative roof.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Horizontal Scroll Products -->
+    <section class="horizontal-section" id="products">
+        <div class="horizontal-container">
+            <div class="horizontal-track">
+                <div class="h-panel h-panel-intro">
+                    <h2>Our <span>Products</span></h2>
+                    <div class="vertical-text">PRODUCTS</div>
+                </div>
+                <div class="h-panel">
+                    <div class="product-panel">
+                        <div class="product-visual">
+                            <span class="product-number">01</span>
+                            <div class="product-mockup">
+                                <div class="product-mockup-content">
+                                    <img src="logo-dark.png" alt="MocapWork">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-tag">Motion Capture</div>
+                            <h3>MocapWork</h3>
+                            <p>Revolutionary motion capture solutions that bring digital characters to life. Professional-grade mocap technology made accessible for creators of all scales—from indie developers to major studios.</p>
+                            <a href="#" class="product-link">
+                                Visit MocapWork
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="h-panel">
+                    <div class="product-panel">
+                        <div class="product-visual">
+                            <span class="product-number">02</span>
+                            <div class="product-mockup">
+                                <div class="product-mockup-content">
+                                    <img src="logo-dark.png" alt="DeployTemplate">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-tag">Deployment</div>
+                            <h3>DeployTemplate</h3>
+                            <p>Streamlined deployment workflows that eliminate friction. Ship faster, scale smarter, and focus on what truly matters—building exceptional products that users love.</p>
+                            <a href="#" class="product-link">
+                                Visit DeployTemplate
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stacking Cards - Values -->
+    <section class="stack-section" id="values">
+        <div class="stack-header">
+            <h2>Our <span>Values</span></h2>
+        </div>
+        <div class="stack-cards">
+            <div class="stack-card">
+                <span class="stack-card-number">01</span>
+                <h3>Innovation First</h3>
+                <p>We don't follow trends—we create them. Every product we build pushes the boundaries of what's possible, challenging conventions and reimagining user experiences from the ground up.</p>
+            </div>
+            <div class="stack-card">
+                <span class="stack-card-number">02</span>
+                <h3>Relentless Quality</h3>
+                <p>Good enough isn't in our vocabulary. We obsess over every pixel, every interaction, every line of code. Our commitment to excellence shows in everything we ship.</p>
+            </div>
+            <div class="stack-card">
+                <span class="stack-card-number">03</span>
+                <h3>Community Driven</h3>
+                <p>Our users aren't just customers—they're partners in innovation. We build alongside our community, listening, iterating, and growing together toward shared goals.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Text Reveal Quote -->
+    <section class="text-reveal-section">
+        <div class="reveal-bg-text">MANUFACTURE</div>
+        <div class="text-reveal-content">
+            <p class="reveal-quote">
+                <span class="word">We</span>
+                <span class="word">don't</span>
+                <span class="word">just</span>
+                <span class="word">create</span>
+                <span class="word">products.</span>
+                <span class="word">We</span>
+                <span class="word highlight">manufacture</span>
+                <span class="word highlight">possibilities.</span>
+                <span class="word">Every</span>
+                <span class="word">line</span>
+                <span class="word">of</span>
+                <span class="word">code,</span>
+                <span class="word">every</span>
+                <span class="word">pixel,</span>
+                <span class="word">every</span>
+                <span class="word">interaction</span>
+                <span class="word">is</span>
+                <span class="word">an</span>
+                <span class="word">opportunity</span>
+                <span class="word">to</span>
+                <span class="word highlight">redefine</span>
+                <span class="word">what's</span>
+                <span class="word">possible.</span>
+            </p>
+        </div>
+    </section>
+
+    <!-- Stats Ticker -->
+    <section class="stats-ticker">
+        <div class="ticker-track">
+            <div class="ticker-item">
+                <div class="ticker-stat">
+                    <span class="ticker-number">50+</span>
+                    <span class="ticker-label">Projects</span>
+                </div>
+                <div class="ticker-divider"></div>
+                <div class="ticker-stat">
+                    <span class="ticker-number">12</span>
+                    <span class="ticker-label">Team Members</span>
+                </div>
+                <div class="ticker-divider"></div>
+                <div class="ticker-stat">
+                    <span class="ticker-number">3</span>
+                    <span class="ticker-label">Products</span>
+                </div>
+                <div class="ticker-divider"></div>
+                <div class="ticker-stat">
+                    <span class="ticker-number">1K+</span>
+                    <span class="ticker-label">Happy Users</span>
+                </div>
+                <div class="ticker-divider"></div>
+            </div>
+            <div class="ticker-item">
+                <div class="ticker-stat">
+                    <span class="ticker-number">50+</span>
+                    <span class="ticker-label">Projects</span>
+                </div>
+                <div class="ticker-divider"></div>
+                <div class="ticker-stat">
+                    <span class="ticker-number">12</span>
+                    <span class="ticker-label">Team Members</span>
+                </div>
+                <div class="ticker-divider"></div>
+                <div class="ticker-stat">
+                    <span class="ticker-number">3</span>
+                    <span class="ticker-label">Products</span>
+                </div>
+                <div class="ticker-divider"></div>
+                <div class="ticker-stat">
+                    <span class="ticker-number">1K+</span>
+                    <span class="ticker-label">Happy Users</span>
+                </div>
+                <div class="ticker-divider"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact" id="contact">
+        <div class="contact-bg-shapes">
+            <div class="contact-shape contact-shape-1"></div>
+            <div class="contact-shape contact-shape-2"></div>
+        </div>
+        <div class="contact-content">
+            <h2 class="contact-title">
+                <span class="line"><span class="word">LET'S</span></span>
+                <span class="line"><span class="word"><span>BUILD</span></span></span>
+            </h2>
+            <p class="contact-subtitle">Ready to create something extraordinary?</p>
+            <a href="mailto:hello@thefactory.com" class="contact-btn">
+                Get In Touch
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">THE FACTORY</div>
+        <div class="footer-links">
+            <a href="#">Twitter</a>
+            <a href="#">LinkedIn</a>
+            <a href="#">Instagram</a>
+        </div>
+        <div class="footer-copy">© 2024 The Factory. All rights reserved.</div>
+    </footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+        // Preloader
+        const preloaderTl = gsap.timeline();
+        preloaderTl
+            .to('.preloader-logo', { opacity: 1, duration: 0.5 })
+            .to('.preloader-progress', { width: '100%', duration: 1.5, ease: 'power2.inOut' })
+            .to('.preloader', { yPercent: -100, duration: 0.8, ease: 'power3.inOut' })
+            .set('.preloader', { display: 'none' });
+
+        // Hero text animation - split into chars
+        const heroLine1 = document.querySelector('.hero-title .line-1');
+        const heroLine2 = document.querySelector('.hero-title .line-2');
+        
+        function splitText(element) {
+            const text = element.textContent;
+            element.innerHTML = text.split('').map(char => 
+                `<span class="char">${char === ' ' ? '&nbsp;' : char}</span>`
+            ).join('');
+        }
+        
+        splitText(heroLine1);
+        splitText(heroLine2);
+
+        // Hero intro animation
+        const heroTl = gsap.timeline({ delay: 2 });
+        heroTl
+            .to('.hero-logo', { opacity: 1, scale: 1, duration: 1, ease: 'back.out(1.7)' }, 0)
+            .to('.hero-title .line-1 .char', {
+                opacity: 1,
+                y: 0,
+                rotateX: 0,
+                duration: 0.8,
+                stagger: 0.05,
+                ease: 'back.out(1.7)'
+            }, 0.3)
+            .to('.hero-title .line-2 .char', {
+                opacity: 1,
+                y: 0,
+                rotateX: 0,
+                duration: 0.8,
+                stagger: 0.03,
+                ease: 'back.out(1.7)'
+            }, 0.5)
+            .to('.hero-subtitle', { opacity: 1, y: 0, duration: 1 }, 1)
+            .to('.scroll-cta', { opacity: 1, duration: 1 }, 1.2);
+
+        // Floating shapes parallax
+        gsap.to('.shape-1', {
+            y: -100,
+            rotation: 45,
+            scrollTrigger: {
+                trigger: '.hero',
+                start: 'top top',
+                end: 'bottom top',
+                scrub: 1
+            }
+        });
+
+        gsap.to('.shape-2', {
+            y: -150,
+            rotation: -30,
+            scrollTrigger: {
+                trigger: '.hero',
+                start: 'top top',
+                end: 'bottom top',
+                scrub: 1
+            }
+        });
+
+        gsap.to('.shape-3', {
+            y: -80,
+            scale: 1.2,
+            scrollTrigger: {
+                trigger: '.hero',
+                start: 'top top',
+                end: 'bottom top',
+                scrub: 1
+            }
+        });
+
+        // Hero parallax
+        gsap.to('.hero-content', {
+            yPercent: 50,
+            opacity: 0,
+            scrollTrigger: {
+                trigger: '.hero',
+                start: 'top top',
+                end: 'bottom top',
+                scrub: true
+            }
+        });
+
+        // Zoom section
+        const zoomTl = gsap.timeline({
+            scrollTrigger: {
+                trigger: '.zoom-section',
+                start: 'top top',
+                end: 'bottom bottom',
+                scrub: 1,
+                pin: '.zoom-container'
+            }
+        });
+
+        zoomTl
+            .fromTo('.zoom-text', 
+                { scale: 1, opacity: 0.3 },
+                { scale: 15, opacity: 0, duration: 1 }
+            )
+            .fromTo('.zoom-content',
+                { scale: 0.8, opacity: 0 },
+                { scale: 1, opacity: 1, duration: 0.5 },
+                0.3
+            );
+
+        // Horizontal scroll
+        const horizontalTrack = document.querySelector('.horizontal-track');
+        const panels = gsap.utils.toArray('.h-panel');
+
+        gsap.to(horizontalTrack, {
+            x: () => -(horizontalTrack.scrollWidth - window.innerWidth),
+            ease: 'none',
+            scrollTrigger: {
+                trigger: '.horizontal-section',
+                start: 'top top',
+                end: () => `+=${horizontalTrack.scrollWidth - window.innerWidth}`,
+                scrub: 1,
+                pin: '.horizontal-container',
+                anticipatePin: 1
+            }
+        });
+
+        // Stacking cards
+        const stackCards = gsap.utils.toArray('.stack-card');
+        
+        stackCards.forEach((card, i) => {
+            const scale = 1 - (stackCards.length - i) * 0.03;
+            
+            ScrollTrigger.create({
+                trigger: card,
+                start: 'top 20%',
+                end: 'bottom 20%',
+                endTrigger: '.stack-section',
+                pin: true,
+                pinSpacing: false
+            });
+
+            if (i < stackCards.length - 1) {
+                gsap.to(card, {
+                    scale: scale,
+                    filter: `brightness(${0.7 + i * 0.1})`,
+                    scrollTrigger: {
+                        trigger: stackCards[i + 1],
+                        start: 'top bottom',
+                        end: 'top 20%',
+                        scrub: true
+                    }
+                });
+            }
+        });
+
+        // Text reveal on scroll
+        const revealWords = gsap.utils.toArray('.reveal-quote .word');
+        
+        ScrollTrigger.create({
+            trigger: '.text-reveal-section',
+            start: 'top 60%',
+            end: 'bottom 40%',
+            onUpdate: (self) => {
+                const progress = self.progress;
+                const activeIndex = Math.floor(progress * revealWords.length);
+                
+                revealWords.forEach((word, i) => {
+                    if (i <= activeIndex) {
+                        word.classList.add('active');
+                    } else {
+                        word.classList.remove('active');
+                    }
+                });
+            }
+        });
+
+        // Background text parallax
+        gsap.to('.reveal-bg-text', {
+            xPercent: -20,
+            scrollTrigger: {
+                trigger: '.text-reveal-section',
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: true
+            }
+        });
+
+        // Contact section animation
+        gsap.fromTo('.contact-title .word',
+            { y: 100, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                stagger: 0.1,
+                duration: 1,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: '.contact',
+                    start: 'top 60%'
+                }
+            }
+        );
+
+        // Contact shapes parallax
+        gsap.to('.contact-shape-1', {
+            y: -100,
+            rotation: 30,
+            scrollTrigger: {
+                trigger: '.contact',
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: true
+            }
+        });
+
+        gsap.to('.contact-shape-2', {
+            y: 100,
+            rotation: -20,
+            scrollTrigger: {
+                trigger: '.contact',
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: true
+            }
+        });
+
+        // Smooth scroll for nav
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    gsap.to(window, {
+                        duration: 1.5,
+                        scrollTo: { y: target, offsetY: 0 },
+                        ease: 'power3.inOut'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
