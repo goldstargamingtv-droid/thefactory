@@ -997,7 +997,7 @@
         }
 
         .tech-cards-wrapper {
-            height: 500vh;
+            height: 600vh;
             position: relative;
         }
 
@@ -2018,6 +2018,18 @@
                         <p>Modern web architecture using React, Next.js, and cutting-edge frameworks. We build lightning-fast, SEO-optimized websites and web applications with stunning UI/UX design, responsive layouts, and seamless user experiences that drive conversions.</p>
                     </div>
                 </article>
+                <article class="tech-card" data-card="4">
+                    <div class="tech-card-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                        </svg>
+                    </div>
+                    <div class="tech-card-number" aria-hidden="true">05</div>
+                    <div class="tech-card-content">
+                        <h3>Artisan Resin Casting & Dice Manufacturing</h3>
+                        <p>Precision resin casting techniques for creating stunning custom dice and gaming accessories. From hand-mixed pigments to pressure-cured molds, our Ward Gaming division crafts museum-quality polyhedral dice and bespoke dice vaults for tabletop enthusiasts.</p>
+                    </div>
+                </article>
             </div>
         </div>
         <div class="tech-progress" aria-hidden="true">
@@ -2025,6 +2037,7 @@
             <div class="tech-progress-dot" data-dot="1"></div>
             <div class="tech-progress-dot" data-dot="2"></div>
             <div class="tech-progress-dot" data-dot="3"></div>
+            <div class="tech-progress-dot" data-dot="4"></div>
         </div>
     </section>
 
@@ -2425,9 +2438,9 @@
             });
 
             techCards.forEach((card, i) => {
-                // Timing: cards appear at 0, 0.25, 0.50, 0.75
-                const startTime = i * 0.25;
-                const exitTime = (i + 1) * 0.25 - 0.05;
+                // Timing: cards appear at 0, 0.20, 0.40, 0.60, 0.80
+                const startTime = i * 0.20;
+                const exitTime = (i + 1) * 0.20 - 0.05;
                 
                 // All cards animate in
                 techTl.fromTo(card, 
@@ -2472,9 +2485,9 @@
                 onUpdate: (self) => {
                     const progress = self.progress;
                     
-                    // Dots light up when cards are visible: 0.04, 0.29, 0.54, 0.79
+                    // Dots light up when cards are visible: 0.04, 0.24, 0.44, 0.64, 0.84
                     techDots.forEach((dot, i) => {
-                        const threshold = i * 0.25 + 0.04;
+                        const threshold = i * 0.20 + 0.04;
                         if (progress >= threshold) {
                             dot.classList.add('active');
                         } else {
