@@ -159,6 +159,7 @@
             justify-content: space-between;
             align-items: center;
             mix-blend-mode: difference;
+            opacity: 0;
         }
 
         .nav-logo {
@@ -260,6 +261,8 @@
             position: relative;
             z-index: 10;
             text-align: center;
+            opacity: 0;
+            visibility: hidden;
         }
 
         .hero-logo {
@@ -292,11 +295,13 @@
             letter-spacing: 0.4em;
             display: block;
             margin-bottom: 0.2em;
+            overflow: hidden;
         }
 
         .hero-title .line-2 {
             color: var(--lime);
             text-shadow: 0 0 80px var(--lime-glow);
+            overflow: hidden;
         }
 
         .hero-subtitle {
@@ -319,6 +324,7 @@
             align-items: center;
             gap: 1rem;
             opacity: 0;
+            visibility: hidden;
         }
 
         .scroll-cta span {
@@ -1491,6 +1497,7 @@
 
         // Start video muted (autoplay policy)
         introVideo.muted = true;
+        introVideo.volume = 0.3; // 30% volume when unmuted
         introVideo.play().catch(e => {
             console.log('Autoplay prevented:', e);
             // If autoplay fails, skip to main content
@@ -1579,7 +1586,9 @@
         // Hero intro animation
         const heroTl = gsap.timeline({ paused: true });
         heroTl
-            .to('.hero-logo', { opacity: 1, scale: 1, duration: 1, ease: 'back.out(1.7)' }, 0)
+            .to('nav', { opacity: 1, duration: 0.8 }, 0)
+            .to('.hero-content', { opacity: 1, visibility: 'visible', duration: 0.5 }, 0)
+            .to('.hero-logo', { opacity: 1, scale: 1, duration: 1, ease: 'back.out(1.7)' }, 0.2)
             .to('.hero-title .line-1 .char', {
                 opacity: 1,
                 y: 0,
@@ -1587,7 +1596,7 @@
                 duration: 0.8,
                 stagger: 0.05,
                 ease: 'back.out(1.7)'
-            }, 0.3)
+            }, 0.5)
             .to('.hero-title .line-2 .char', {
                 opacity: 1,
                 y: 0,
@@ -1595,9 +1604,9 @@
                 duration: 0.8,
                 stagger: 0.03,
                 ease: 'back.out(1.7)'
-            }, 0.5)
-            .to('.hero-subtitle', { opacity: 1, y: 0, duration: 1 }, 1)
-            .to('.scroll-cta', { opacity: 1, duration: 1 }, 1.2);
+            }, 0.7)
+            .to('.hero-subtitle', { opacity: 1, y: 0, duration: 1 }, 1.2)
+            .to('.scroll-cta', { opacity: 1, visibility: 'visible', duration: 1 }, 1.4);
 
             // Play hero animations
             heroTl.play();
