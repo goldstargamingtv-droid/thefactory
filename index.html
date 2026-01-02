@@ -1163,7 +1163,8 @@
 
         .ticker-track {
             display: flex;
-            animation: ticker 30s linear infinite;
+            width: fit-content;
+            animation: ticker 20s linear infinite;
         }
 
         .ticker-item {
@@ -1172,6 +1173,7 @@
             gap: 4rem;
             padding: 0 4rem;
             white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .ticker-stat {
@@ -1790,7 +1792,7 @@
     <!-- Hero Section -->
     <section class="hero" role="banner">
         <video class="hero-video" autoplay muted loop playsinline>
-            <source src="https://ekzablbemeponkrcitco.supabase.co/storage/v1/object/public/glb-previews/The_Factrory_Intro.mp4" type="video/mp4">
+            <source src="videos/The_Factory_Intro.mp4" type="video/mp4">
         </video>
         <div class="hero-video-overlay"></div>
         <div class="hero-bg-grid"></div>
@@ -2045,45 +2047,45 @@
         <div class="ticker-track">
             <div class="ticker-item">
                 <div class="ticker-stat">
-                    <span class="ticker-number">50+</span>
-                    <span class="ticker-label">Projects</span>
-                </div>
-                <div class="ticker-divider"></div>
-                <div class="ticker-stat">
                     <span class="ticker-number">12</span>
                     <span class="ticker-label">Team Members</span>
                 </div>
                 <div class="ticker-divider"></div>
                 <div class="ticker-stat">
-                    <span class="ticker-number">4</span>
-                    <span class="ticker-label">Products</span>
+                    <span class="ticker-number">10</span>
+                    <span class="ticker-label">SaaS Clients</span>
                 </div>
                 <div class="ticker-divider"></div>
                 <div class="ticker-stat">
-                    <span class="ticker-number">1K+</span>
-                    <span class="ticker-label">Happy Users</span>
+                    <span class="ticker-number">8</span>
+                    <span class="ticker-label">Years Running</span>
+                </div>
+                <div class="ticker-divider"></div>
+                <div class="ticker-stat">
+                    <span class="ticker-number">4</span>
+                    <span class="ticker-label">Flagship Products</span>
                 </div>
                 <div class="ticker-divider"></div>
             </div>
             <div class="ticker-item">
                 <div class="ticker-stat">
-                    <span class="ticker-number">50+</span>
-                    <span class="ticker-label">Projects</span>
-                </div>
-                <div class="ticker-divider"></div>
-                <div class="ticker-stat">
                     <span class="ticker-number">12</span>
                     <span class="ticker-label">Team Members</span>
                 </div>
                 <div class="ticker-divider"></div>
                 <div class="ticker-stat">
-                    <span class="ticker-number">4</span>
-                    <span class="ticker-label">Products</span>
+                    <span class="ticker-number">10</span>
+                    <span class="ticker-label">SaaS Clients</span>
                 </div>
                 <div class="ticker-divider"></div>
                 <div class="ticker-stat">
-                    <span class="ticker-number">1K+</span>
-                    <span class="ticker-label">Happy Users</span>
+                    <span class="ticker-number">8</span>
+                    <span class="ticker-label">Years Running</span>
+                </div>
+                <div class="ticker-divider"></div>
+                <div class="ticker-stat">
+                    <span class="ticker-number">4</span>
+                    <span class="ticker-label">Flagship Products</span>
                 </div>
                 <div class="ticker-divider"></div>
             </div>
@@ -2102,7 +2104,7 @@
                 <span class="line"><span class="word"><span>BUILD</span></span></span>
             </h2>
             <p class="contact-subtitle">Ready to bring your vision to life? Partner with Las Vegas's premier creative studio.</p>
-            <a href="mailto:hello@thefactorystudios.com" class="contact-btn" aria-label="Contact The Factory Studios via email">
+            <a href="/cdn-cgi/l/email-protection#d4bcb1b8b8bb94a0bcb1b2b5b7a0bba6ada7a0a1b0bdbba7fab7bbb9" class="contact-btn" aria-label="Contact The Factory Studios via email">
                 Get In Touch
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
@@ -2121,7 +2123,7 @@
         <div class="footer-copy">© 2025 The Factory Studios. Motion Capture & Game Development Studio. Las Vegas, NV.</div>
     </footer>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
         // Mobile Menu
@@ -2641,6 +2643,7 @@
                 el.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
             });
             
+          
             el.addEventListener('mouseleave', () => {
                 el.style.transform = 'translate(0, 0)';
             });
