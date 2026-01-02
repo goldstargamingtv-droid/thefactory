@@ -109,6 +109,78 @@
             letter-spacing: 0.2em;
             text-transform: uppercase;
             font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--lime);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .mobile-menu-btn span {
+            width: 25px;
+            height: 2px;
+            background: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: var(--darker);
+            z-index: 9999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .mobile-menu.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .mobile-menu a {
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 900;
+            font-style: italic;
+            font-size: 2rem;
+            color: var(--white);
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.3s ease;
+        }
+
+        .mobile-menu a:hover {
+            color: var(--lime);
+        }
+
+        .mobile-menu-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 2rem;
+            cursor: pointer;
         }
 
         /* Hero - 3D Layered Intro */
@@ -562,12 +634,12 @@
             position: relative;
             background: var(--darker);
             overflow: hidden;
-            padding-top: 5rem;
+            padding-top: 2rem;
         }
 
         .tech-header {
             height: auto;
-            padding: 10rem 0 5rem 0;
+            padding: 6rem 0 2rem 0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -603,7 +675,7 @@
         }
 
         .tech-cards-wrapper {
-            height: 350vh;
+            height: 250vh;
             position: relative;
         }
 
@@ -996,39 +1068,360 @@
             }
         }
 
+        /* Mobile Styles - 768px and below */
         @media (max-width: 768px) {
+            /* Navigation */
             nav {
                 padding: 1rem 1.5rem;
+            }
+
+            .nav-logo {
+                font-size: 1rem;
+                letter-spacing: 0.15em;
             }
 
             .nav-links {
                 display: none;
             }
 
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            /* Hero Section */
+            .hero {
+                min-height: 100svh;
+            }
+
+            .hero-logo {
+                width: 120px;
+                margin-bottom: 1.5rem;
+            }
+
+            .hero-title {
+                font-size: clamp(3rem, 15vw, 6rem);
+            }
+
+            .hero-title .line-1 {
+                font-size: 0.4em;
+                letter-spacing: 0.3em;
+            }
+
+            .hero-subtitle {
+                font-size: 0.7rem;
+                letter-spacing: 0.3em;
+                margin-top: 1.5rem;
+                padding: 0 1rem;
+            }
+
+            .scroll-cta {
+                bottom: 2rem;
+            }
+
+            .scroll-cta span {
+                font-size: 0.65rem;
+            }
+
+            .floating-shape {
+                display: none;
+            }
+
+            /* Zoom Section */
+            .zoom-section {
+                height: 200vh;
+            }
+
+            .zoom-text {
+                font-size: 30vw;
+            }
+
+            .zoom-content h2 {
+                font-size: clamp(2rem, 6vw, 3rem);
+            }
+
+            .zoom-content p {
+                font-size: 0.95rem;
+                padding: 0 1.5rem;
+            }
+
+            /* Horizontal Scroll / Products Section */
+            .horizontal-section {
+                height: auto;
+                overflow: visible;
+            }
+
+            .horizontal-container {
+                height: auto;
+                overflow: visible;
+            }
+
+            .horizontal-track {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+            }
+
             .h-panel {
-                padding: 2rem;
+                width: 100%;
+                min-width: 100%;
+                height: auto;
+                min-height: 100vh;
+                padding: 4rem 1.5rem;
+            }
+
+            .h-panel-intro {
+                padding: 6rem 1.5rem;
+                min-height: 60vh;
+            }
+
+            .h-panel-intro h2 {
+                font-size: clamp(3rem, 12vw, 5rem);
+            }
+
+            .h-panel-intro .vertical-text {
+                display: none;
+            }
+
+            .product-panel {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                padding: 0;
+            }
+
+            .product-visual {
+                height: 250px;
+            }
+
+            .product-mockup {
+                border-radius: 12px;
+            }
+
+            .product-number {
+                font-size: 12rem;
+                top: -3rem;
+                left: -1rem;
+            }
+
+            .product-info {
+                padding: 0 0.5rem;
             }
 
             .product-info h3 {
-                font-size: 2.5rem;
-            }
-
-            .tech-card {
-                padding: 2rem;
-            }
-
-            .tech-card-content h3 {
                 font-size: 2rem;
             }
 
-            .tech-progress {
-                right: 1rem;
+            .product-info p {
+                font-size: 0.95rem;
             }
 
+            .product-tag {
+                font-size: 0.65rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .product-link {
+                font-size: 0.75rem;
+            }
+
+            /* LumiMakers mockup mobile */
+            .lumimakers-img-container {
+                padding: 1rem;
+            }
+
+            .lumimakers-img-container img {
+                width: 100%;
+            }
+
+            /* Technology Section */
+            .tech-section {
+                padding-top: 3rem;
+            }
+
+            .tech-header {
+                padding: 4rem 1.5rem 3rem 1.5rem;
+            }
+
+            .tech-header h2 {
+                font-size: clamp(2.5rem, 10vw, 4rem);
+            }
+
+            .tech-header-bg {
+                font-size: 40vw;
+            }
+
+            .tech-cards-wrapper {
+                height: auto;
+            }
+
+            .tech-cards-container {
+                position: relative;
+                height: auto;
+                flex-direction: column;
+                padding: 2rem 1.5rem;
+                gap: 2rem;
+            }
+
+            .tech-card {
+                position: relative;
+                transform: none !important;
+                opacity: 1 !important;
+                width: 100%;
+                padding: 2rem;
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .tech-card-number {
+                font-size: 6rem;
+                position: relative;
+                top: auto;
+                left: auto;
+            }
+
+            .tech-card-content h3 {
+                font-size: 1.8rem;
+            }
+
+            .tech-card-content p {
+                font-size: 0.95rem;
+            }
+
+            .tech-card-icon {
+                position: relative;
+                top: auto;
+                right: auto;
+                width: 50px;
+                height: 50px;
+                margin-bottom: 1rem;
+            }
+
+            .tech-progress {
+                display: none;
+            }
+
+            /* Text Reveal Section */
+            .text-reveal-section {
+                height: auto;
+                min-height: 60vh;
+                padding: 4rem 1.5rem;
+            }
+
+            .text-reveal-content p {
+                font-size: clamp(1.5rem, 5vw, 2rem);
+                line-height: 1.6;
+            }
+
+            .reveal-bg-text {
+                font-size: 50vw;
+            }
+
+            /* Stats Ticker */
+            .stats-ticker {
+                padding: 2rem 0;
+            }
+
+            .ticker-number {
+                font-size: 3rem;
+            }
+
+            .ticker-label {
+                font-size: 0.7rem;
+            }
+
+            .ticker-divider {
+                height: 40px;
+                margin: 0 1.5rem;
+            }
+
+            /* Contact Section */
+            .contact-section {
+                height: auto;
+                min-height: 80vh;
+                padding: 4rem 1.5rem;
+            }
+
+            .contact-title {
+                font-size: clamp(3rem, 12vw, 6rem);
+            }
+
+            .contact-subtitle {
+                font-size: 0.95rem;
+                padding: 0 1rem;
+            }
+
+            .contact-btn {
+                padding: 1rem 2rem;
+                font-size: 0.8rem;
+            }
+
+            .contact-shape {
+                display: none;
+            }
+
+            /* Footer */
             footer {
                 flex-direction: column;
-                gap: 2rem;
+                gap: 1.5rem;
                 text-align: center;
+                padding: 2rem 1.5rem;
+            }
+
+            .footer-logo {
+                font-size: 1rem;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            .footer-links a {
+                font-size: 0.8rem;
+            }
+
+            .footer-copy {
+                font-size: 0.75rem;
+            }
+        }
+
+        /* Extra small mobile - 480px and below */
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: clamp(2.5rem, 18vw, 4rem);
+            }
+
+            .hero-subtitle {
+                font-size: 0.6rem;
+                letter-spacing: 0.2em;
+            }
+
+            .h-panel-intro h2 {
+                font-size: clamp(2.5rem, 14vw, 4rem);
+            }
+
+            .product-info h3 {
+                font-size: 1.75rem;
+            }
+
+            .product-number {
+                font-size: 8rem;
+            }
+
+            .tech-header h2 {
+                font-size: clamp(2rem, 12vw, 3rem);
+            }
+
+            .contact-title {
+                font-size: clamp(2.5rem, 14vw, 4rem);
+            }
+
+            .text-reveal-content p {
+                font-size: clamp(1.2rem, 5vw, 1.5rem);
             }
         }
     </style>
@@ -1051,7 +1444,21 @@
             <a href="#technology">Technology</a>
             <a href="#contact">Contact</a>
         </div>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-menu-close" id="mobileMenuClose">&times;</button>
+        <a href="#about" class="mobile-menu-link">About</a>
+        <a href="#products" class="mobile-menu-link">Products</a>
+        <a href="#technology" class="mobile-menu-link">Technology</a>
+        <a href="#contact" class="mobile-menu-link">Contact</a>
+    </div>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -1365,6 +1772,33 @@
     <script>
         gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
+        // Mobile Menu
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileMenuClose = document.getElementById('mobileMenuClose');
+        const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
+
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        }
+
+        if (mobileMenuClose) {
+            mobileMenuClose.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        }
+
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
         // Set initial states for hero elements
         gsap.set('.hero-content', { opacity: 0 });
         gsap.set('nav', { opacity: 0 });
@@ -1500,22 +1934,25 @@
                 0.3
             );
 
-        // Horizontal scroll
+        // Horizontal scroll - only on desktop
         const horizontalTrack = document.querySelector('.horizontal-track');
         const panels = gsap.utils.toArray('.h-panel');
+        const isMobile = window.innerWidth <= 768;
 
-        gsap.to(horizontalTrack, {
-            x: () => -(horizontalTrack.scrollWidth - window.innerWidth),
-            ease: 'none',
-            scrollTrigger: {
-                trigger: '.horizontal-section',
-                start: 'top top',
-                end: () => `+=${horizontalTrack.scrollWidth - window.innerWidth}`,
-                scrub: 1,
-                pin: '.horizontal-container',
-                anticipatePin: 1
-            }
-        });
+        if (!isMobile) {
+            gsap.to(horizontalTrack, {
+                x: () => -(horizontalTrack.scrollWidth - window.innerWidth),
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: '.horizontal-section',
+                    start: 'top top',
+                    end: () => `+=${horizontalTrack.scrollWidth - window.innerWidth}`,
+                    scrub: 1,
+                    pin: '.horizontal-container',
+                    anticipatePin: 1
+                }
+            });
+        }
 
         // Technology Cards Animation
         const techCards = gsap.utils.toArray('.tech-card');
@@ -1524,7 +1961,7 @@
 
         // Tech header title slide in from right - only triggers once section is fully in view
         gsap.from('.tech-header h2', {
-            x: 300,
+            x: isMobile ? 100 : 300,
             opacity: 0,
             duration: 1.2,
             ease: 'power3.out',
@@ -1535,86 +1972,115 @@
             }
         });
         
-        // Show progress dots when in tech section
-        ScrollTrigger.create({
-            trigger: '.tech-cards-wrapper',
-            start: 'top center',
-            end: 'bottom center',
-            onEnter: () => techProgress.classList.add('active'),
-            onLeave: () => techProgress.classList.remove('active'),
-            onEnterBack: () => techProgress.classList.add('active'),
-            onLeaveBack: () => techProgress.classList.remove('active')
-        });
+        // Show progress dots when in tech section - desktop only
+        if (!isMobile) {
+            ScrollTrigger.create({
+                trigger: '.tech-cards-wrapper',
+                start: 'top center',
+                end: 'bottom center',
+                onEnter: () => techProgress.classList.add('active'),
+                onLeave: () => techProgress.classList.remove('active'),
+                onEnterBack: () => techProgress.classList.add('active'),
+                onLeaveBack: () => techProgress.classList.remove('active')
+            });
 
-        // Animate each card
-        const techTl = gsap.timeline({
-            scrollTrigger: {
+            // Animate each card
+            const techTl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: '.tech-cards-wrapper',
+                    start: 'top top',
+                    end: 'bottom bottom',
+                    scrub: 1,
+                    pin: '.tech-cards-container'
+                }
+            });
+
+            techCards.forEach((card, i) => {
+                // First card starts visible, others animate in
+                const startTime = i === 0 ? 0 : (i * 0.30) - 0.05;
+                const endTime = startTime + 0.25;
+                
+                if (i === 0) {
+                    // First card is visible immediately
+                    techTl.fromTo(card, 
+                        { 
+                            opacity: 0, 
+                            y: '50vh',
+                            rotateX: 10,
+                            scale: 0.95
+                        },
+                        { 
+                            opacity: 1, 
+                            y: 0,
+                            rotateX: 0,
+                            scale: 1,
+                            duration: 0.08,
+                            ease: 'power2.out'
+                        },
+                        0
+                    );
+                } else {
+                    // Card enters
+                    techTl.fromTo(card, 
+                        { 
+                            opacity: 0, 
+                            y: '80vh',
+                            rotateX: 15,
+                            scale: 0.9
+                        },
+                        { 
+                            opacity: 1, 
+                            y: 0,
+                            rotateX: 0,
+                            scale: 1,
+                            duration: 0.12,
+                            ease: 'power2.out'
+                        },
+                        startTime
+                    );
+                }
+                
+                // Card exits (except last one)
+                if (i < techCards.length - 1) {
+                    techTl.to(card, 
+                        { 
+                            opacity: 0, 
+                            y: '-50vh',
+                            rotateX: -10,
+                            scale: 0.95,
+                            duration: 0.12,
+                            ease: 'power2.in'
+                        },
+                        endTime
+                    );
+                }
+            });
+
+            // Update progress dots
+            ScrollTrigger.create({
                 trigger: '.tech-cards-wrapper',
                 start: 'top top',
                 end: 'bottom bottom',
-                scrub: 1,
-                pin: '.tech-cards-container'
-            }
-        });
-
-        techCards.forEach((card, i) => {
-            const startTime = i * 0.33;
-            const endTime = startTime + 0.28;
-            
-            // Card enters
-            techTl.fromTo(card, 
-                { 
-                    opacity: 0, 
-                    y: '100vh',
-                    rotateX: 15,
-                    scale: 0.9
-                },
-                { 
-                    opacity: 1, 
-                    y: 0,
-                    rotateX: 0,
-                    scale: 1,
-                    duration: 0.15,
-                    ease: 'power2.out'
-                },
-                startTime
-            );
-            
-            // Card exits (except last one)
-            if (i < techCards.length - 1) {
-                techTl.to(card, 
-                    { 
-                        opacity: 0, 
-                        y: '-50vh',
-                        rotateX: -10,
-                        scale: 0.95,
-                        duration: 0.15,
-                        ease: 'power2.in'
-                    },
-                    endTime
-                );
-            }
-        });
-
-        // Update progress dots
-        ScrollTrigger.create({
-            trigger: '.tech-cards-wrapper',
-            start: 'top top',
-            end: 'bottom bottom',
-            onUpdate: (self) => {
-                const progress = self.progress;
-                let activeIndex = Math.floor(progress * 3);
-                if (activeIndex > 2) activeIndex = 2;
-                
-                techDots.forEach((dot, i) => {
-                    if (i <= activeIndex) {
-                        dot.classList.add('active');
-                    } else {
-                        dot.classList.remove('active');
-                    }
-                });
-            }
-        });
+                onUpdate: (self) => {
+                    const progress = self.progress;
+                    let activeIndex = Math.floor(progress * 3);
+                    if (activeIndex > 2) activeIndex = 2;
+                    
+                    techDots.forEach((dot, i) => {
+                        if (i <= activeIndex) {
+                            dot.classList.add('active');
+                        } else {
+                            dot.classList.remove('active');
+                        }
+                    });
+                }
+            });
+        } else {
+            // Mobile: simple fade in for tech cards
+            techCards.forEach((card) => {
+                gsap.set(card, { opacity: 1, y: 0, transform: 'none' });
+            });
+        }
 
         // Tech header parallax
         gsap.to('.tech-header-bg', {
