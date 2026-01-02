@@ -31,7 +31,7 @@
     <!-- Additional Meta -->
     <meta name="geo.region" content="US-NV">
     <meta name="geo.placename" content="Las Vegas">
-    <meta name="theme-color" content="#8BC34A">
+    <meta name="theme-color" content="#7ED321">
     
     <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -148,9 +148,9 @@
         }
 
         :root {
-            --lime: #8BC34A;
-            --lime-bright: #9CCC65;
-            --lime-glow: rgba(139, 195, 74, 0.4);
+            --lime: #7ED321;
+            --lime-bright: #8FE034;
+            --lime-glow: rgba(126, 211, 33, 0.4);
             --dark: #0a0a0a;
             --darker: #050505;
             --gray: #1a1a1a;
@@ -333,6 +333,23 @@
             perspective: 1000px;
         }
 
+        .hero-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            object-fit: cover;
+        }
+
+        .hero-video-overlay {
+            display: none;
+        }
+
         .hero-bg-grid {
             position: absolute;
             top: 0;
@@ -340,11 +357,12 @@
             width: 100%;
             height: 100%;
             background-image: 
-                linear-gradient(rgba(139, 195, 74, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(139, 195, 74, 0.03) 1px, transparent 1px);
+                linear-gradient(rgba(126, 211, 33, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(126, 211, 33, 0.03) 1px, transparent 1px);
             background-size: 80px 80px;
             transform: perspective(500px) rotateX(60deg);
             transform-origin: center top;
+            z-index: 2;
         }
 
         .hero-shapes {
@@ -354,6 +372,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
+            z-index: 2;
         }
 
         .floating-shape {
@@ -392,61 +411,94 @@
             left: 0;
             width: 100%;
             height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             will-change: transform;
+            z-index: 3;
         }
 
         .hero-content {
-            position: relative;
+            position: absolute;
             z-index: 10;
-            text-align: center;
-        }
-
-        .hero-logo {
-            width: 200px;
-            margin-bottom: 2rem;
-            filter: drop-shadow(0 0 60px var(--lime-glow));
+            bottom: 12vh;
+            left: 4vw;
+            text-align: left;
         }
 
         .hero-title {
             font-family: 'Source Sans Pro', sans-serif;
             font-weight: 900;
             font-style: italic;
-            font-size: clamp(5rem, 18vw, 14rem);
-            letter-spacing: 0.02em;
-            line-height: 0.85;
+            font-size: clamp(4rem, 15vw, 12rem);
+            letter-spacing: -0.02em;
+            line-height: 0.8;
             position: relative;
             text-transform: uppercase;
         }
 
-        .hero-title .char {
-            display: inline-block;
-        }
-
         .hero-title .line-1 {
             color: var(--light-gray);
-            font-size: 0.35em;
-            letter-spacing: 0.4em;
+            font-size: 0.22em;
+            letter-spacing: 0.5em;
             display: block;
-            margin-bottom: 0.2em;
-            overflow: hidden;
+            margin-bottom: 0.1em;
+            margin-left: 0.1em;
         }
 
         .hero-title .line-2 {
             color: var(--lime);
+            display: block;
+            margin-left: -0.05em;
             text-shadow: 0 0 80px var(--lime-glow);
-            overflow: hidden;
         }
 
         .hero-subtitle {
-            font-size: 1rem;
-            font-weight: 300;
-            letter-spacing: 0.5em;
+            font-size: 0.7rem;
+            letter-spacing: 0.25em;
             text-transform: uppercase;
             color: var(--light-gray);
             margin-top: 2rem;
+            max-width: 500px;
+            line-height: 2;
+        }
+
+        .hero-services {
+            position: absolute;
+            right: 4vw;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 1.5rem;
+            z-index: 10;
+        }
+
+        .hero-service {
+            font-size: 0.65rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--light-gray);
+            writing-mode: horizontal-tb;
+            opacity: 0.7;
+            transition: opacity 0.3s ease, color 0.3s ease;
+        }
+
+        .hero-service:hover {
+            opacity: 1;
+            color: var(--lime);
+        }
+
+        .hero-service::before {
+            content: '';
+            display: inline-block;
+            width: 30px;
+            height: 1px;
+            background: var(--lime);
+            margin-right: 1rem;
+            vertical-align: middle;
+        }
+
+        .hero-title .char {
+            display: inline-block;
         }
 
         .scroll-cta {
@@ -458,6 +510,7 @@
             flex-direction: column;
             align-items: center;
             gap: 1rem;
+            z-index: 3;
         }
 
         .scroll-cta span {
@@ -791,7 +844,7 @@
 
         .tech-header {
             height: auto;
-            padding: 2rem 0 0 0;
+            padding: 2rem 0 1rem 0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -827,7 +880,7 @@
         }
 
         .tech-cards-wrapper {
-            height: 550vh;
+            height: 500vh;
             position: relative;
         }
 
@@ -1247,25 +1300,27 @@
                 min-height: 100svh;
             }
 
-            .hero-logo {
-                width: 120px;
-                margin-bottom: 1.5rem;
+            .hero-content {
+                bottom: 15vh;
+                left: 1.5rem;
             }
 
             .hero-title {
-                font-size: clamp(3rem, 15vw, 6rem);
+                font-size: clamp(3rem, 18vw, 6rem);
             }
 
             .hero-title .line-1 {
-                font-size: 0.4em;
-                letter-spacing: 0.3em;
+                font-size: 0.25em;
+                letter-spacing: 0.4em;
             }
 
             .hero-subtitle {
-                font-size: 0.7rem;
-                letter-spacing: 0.3em;
-                margin-top: 1.5rem;
-                padding: 0 1rem;
+                font-size: 0.6rem;
+                margin-top: 1rem;
+            }
+
+            .hero-services {
+                display: none;
             }
 
             .scroll-cta {
@@ -1612,6 +1667,10 @@
 
     <!-- Hero Section -->
     <section class="hero" role="banner">
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="https://ekzablbemeponkrcitco.supabase.co/storage/v1/object/public/glb-previews/The_Factrory_Intro.mp4" type="video/mp4">
+        </video>
+        <div class="hero-video-overlay"></div>
         <div class="hero-bg-grid"></div>
         <div class="hero-shapes" aria-hidden="true">
             <div class="floating-shape shape-1"></div>
@@ -1620,12 +1679,17 @@
         </div>
         <div class="hero-layer" data-speed="0.5">
             <div class="hero-content">
-                <img src="logo-color.png" alt="The Factory Studios - Las Vegas Motion Capture and Game Development Studio" class="hero-logo">
                 <h1 class="hero-title">
                     <span class="line-1">THE</span>
                     <span class="line-2">FACTORY</span>
                 </h1>
-                <p class="hero-subtitle">Motion Capture Studio • Game Development • 3D Printing & Prototyping • Web Design</p>
+                <p class="hero-subtitle">Las Vegas's Premier Creative Studio</p>
+            </div>
+            <div class="hero-services">
+                <span class="hero-service">Motion Capture</span>
+                <span class="hero-service">Game Development</span>
+                <span class="hero-service">3D Printing</span>
+                <span class="hero-service">Web Design</span>
             </div>
         </div>
         <div class="scroll-cta" aria-label="Scroll to explore">
@@ -1968,8 +2032,8 @@
         gsap.set('.hero-content', { opacity: 0 });
         gsap.set('nav', { opacity: 0 });
         gsap.set('.scroll-cta', { opacity: 0 });
-        gsap.set('.hero-logo', { opacity: 0, scale: 0.8 });
         gsap.set('.hero-subtitle', { opacity: 0 });
+        gsap.set('.hero-service', { opacity: 0, x: 30 });
 
         // Hero text animation - split into chars
         const heroLine1 = document.querySelector('.hero-title .line-1');
@@ -2007,7 +2071,6 @@
         heroTl
             .to('nav', { opacity: 1, duration: 0.5 }, 0)
             .to('.hero-content', { opacity: 1, duration: 0.3 }, 0)
-            .to('.hero-logo', { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(1.7)' }, 0.1)
             .to('.hero-title .line-1 .char', {
                 opacity: 1,
                 y: 0,
@@ -2025,11 +2088,29 @@
                 ease: 'back.out(1.7)'
             }, 0.3)
             .to('.hero-subtitle', { opacity: 1, duration: 0.5 }, 0.6)
+            .to('.hero-service', { 
+                opacity: 0.7, 
+                x: 0, 
+                duration: 0.5, 
+                stagger: 0.1,
+                ease: 'power2.out'
+            }, 0.5)
             .to('.scroll-cta', { opacity: 1, duration: 0.5 }, 0.7);
 
             // Play hero animations
             heroTl.play();
         }
+
+        // Hero video fade out on scroll
+        gsap.to('.hero-video', {
+            opacity: 0,
+            scrollTrigger: {
+                trigger: '.hero',
+                start: 'top top',
+                end: '50% top',
+                scrub: 1
+            }
+        });
 
         // Floating shapes parallax
         gsap.to('.shape-1', {
@@ -2175,24 +2256,24 @@
             });
 
             techCards.forEach((card, i) => {
-                // All 4 cards: appear at 0, 0.25, 0.50, 0.75 - each gets equal screen time
+                // Timing: cards appear at 0, 0.25, 0.50, 0.75
                 const startTime = i * 0.25;
-                const exitTime = (i + 1) * 0.25 - 0.06;
+                const exitTime = (i + 1) * 0.25 - 0.05;
                 
-                // Card enters
+                // All cards animate in
                 techTl.fromTo(card, 
                     { 
                         opacity: 0, 
-                        y: '80vh',
-                        rotateX: 15,
-                        scale: 0.9
+                        y: '60vh',
+                        rotateX: 10,
+                        scale: 0.95
                     },
                     { 
                         opacity: 1, 
                         y: 0,
                         rotateX: 0,
                         scale: 1,
-                        duration: 0.06,
+                        duration: 0.08,
                         ease: 'power2.out'
                     },
                     startTime
@@ -2206,7 +2287,7 @@
                             y: '-50vh',
                             rotateX: -10,
                             scale: 0.95,
-                            duration: 0.06,
+                            duration: 0.05,
                             ease: 'power2.in'
                         },
                         exitTime
@@ -2222,9 +2303,10 @@
                 onUpdate: (self) => {
                     const progress = self.progress;
                     
-                    // Dots light up exactly when cards appear: 0, 0.25, 0.50, 0.75
+                    // Dots light up when cards are visible: 0.04, 0.29, 0.54, 0.79
                     techDots.forEach((dot, i) => {
-                        if (progress >= i * 0.25) {
+                        const threshold = i * 0.25 + 0.04;
+                        if (progress >= threshold) {
                             dot.classList.add('active');
                         } else {
                             dot.classList.remove('active');
@@ -2239,16 +2321,20 @@
             });
         }
 
-        // Tech header parallax
-        gsap.to('.tech-header-bg', {
-            xPercent: -30,
-            scrollTrigger: {
-                trigger: '.tech-header',
-                start: 'top bottom',
-                end: 'bottom top',
-                scrub: true
+        // Tech header parallax - reverses on scroll up
+        gsap.fromTo('.tech-header-bg', 
+            { x: '10%' },
+            {
+                x: '-20%',
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: '.tech-header',
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: true
+                }
             }
-        });
+        );
 
         // Text reveal on scroll
         const revealWords = gsap.utils.toArray('.reveal-quote .word');
