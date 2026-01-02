@@ -204,6 +204,7 @@
             letter-spacing: 0.02em;
             line-height: 0.85;
             position: relative;
+            text-transform: uppercase;
         }
 
         .hero-title .char {
@@ -295,12 +296,15 @@
         }
 
         .zoom-text {
-            font-family: 'Bebas Neue', sans-serif;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 900;
+            font-style: italic;
             font-size: 20vw;
             color: var(--gray);
             position: absolute;
             white-space: nowrap;
             will-change: transform;
+            text-transform: uppercase;
         }
 
         .zoom-content {
@@ -319,6 +323,7 @@
             font-style: italic;
             font-size: clamp(3rem, 8vw, 5rem);
             margin-bottom: 1.5rem;
+            text-transform: uppercase;
         }
 
         .zoom-content h2 span {
@@ -375,6 +380,7 @@
             font-style: italic;
             font-size: clamp(4rem, 12vw, 10rem);
             text-align: center;
+            text-transform: uppercase;
         }
 
         .h-panel-intro h2 span {
@@ -383,7 +389,9 @@
 
         .h-panel-intro .vertical-text {
             position: absolute;
-            font-family: 'Bebas Neue', sans-serif;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 900;
+            font-style: italic;
             font-size: 15vw;
             color: var(--gray);
             opacity: 0.3;
@@ -391,6 +399,7 @@
             right: 5%;
             top: 50%;
             transform: translateY(-50%);
+            text-transform: uppercase;
         }
 
         .product-panel {
@@ -432,10 +441,6 @@
             display: none;
         }
 
-        .game-mockup::before {
-            display: none;
-        }
-
         .product-mockup-content {
             padding: 30px 0 0 0;
             height: 100%;
@@ -455,7 +460,9 @@
 
         .product-number {
             position: absolute;
-            font-family: 'Bebas Neue', sans-serif;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 900;
+            font-style: italic;
             font-size: 25rem;
             color: var(--lime);
             opacity: 0.08;
@@ -484,7 +491,7 @@
             transform: scale(1.1);
         }
 
-        .lumimakers-print-container {
+        .lumimakers-img-container {
             position: relative;
             width: 100%;
             height: 100%;
@@ -495,66 +502,20 @@
             z-index: 2;
         }
 
-        .lumimakers-img {
+        .lumimakers-img-container img {
             width: 90%;
             max-height: 90%;
             object-fit: contain;
-            clip-path: inset(100% 0 0 0);
-            animation: printReveal 3s ease-out forwards;
-            animation-play-state: paused;
-        }
-
-        .lumimakers-mockup:hover .lumimakers-img,
-        .lumimakers-img.printing {
-            animation-play-state: running;
-        }
-
-        .print-line {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, transparent, var(--lime), var(--lime-bright), var(--lime), transparent);
-            box-shadow: 0 0 20px var(--lime), 0 0 40px var(--lime-glow);
-            opacity: 0;
-            animation: printLine 3s ease-out forwards;
-            animation-play-state: paused;
-        }
-
-        .lumimakers-mockup:hover .print-line,
-        .print-line.printing {
-            animation-play-state: running;
-        }
-
-        @keyframes printReveal {
-            0% {
-                clip-path: inset(100% 0 0 0);
-            }
-            100% {
-                clip-path: inset(0% 0 0 0);
-            }
-        }
-
-        @keyframes printLine {
-            0% {
-                bottom: 0%;
-                opacity: 1;
-            }
-            95% {
-                opacity: 1;
-            }
-            100% {
-                bottom: 100%;
-                opacity: 0;
-            }
         }
 
         .product-info h3 {
-            font-family: 'Bebas Neue', sans-serif;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 900;
+            font-style: italic;
             font-size: 4rem;
             margin-bottom: 1rem;
             letter-spacing: 0.02em;
+            text-transform: uppercase;
         }
 
         .product-tag {
@@ -621,6 +582,7 @@
             text-align: center;
             position: relative;
             z-index: 10;
+            text-transform: uppercase;
         }
 
         .tech-header h2 span {
@@ -629,12 +591,15 @@
 
         .tech-header-bg {
             position: absolute;
-            font-family: 'Bebas Neue', sans-serif;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 900;
+            font-style: italic;
             font-size: 25vw;
             color: var(--gray);
             opacity: 0.15;
             white-space: nowrap;
             pointer-events: none;
+            text-transform: uppercase;
         }
 
         .tech-cards-wrapper {
@@ -669,7 +634,9 @@
         }
 
         .tech-card-number {
-            font-family: 'Bebas Neue', sans-serif;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 900;
+            font-style: italic;
             font-size: 12rem;
             color: var(--lime);
             opacity: 0.15;
@@ -678,10 +645,13 @@
         }
 
         .tech-card-content h3 {
-            font-family: 'Bebas Neue', sans-serif;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 900;
+            font-style: italic;
             font-size: 3rem;
             margin-bottom: 1.5rem;
             letter-spacing: 0.02em;
+            text-transform: uppercase;
         }
 
         .tech-card-content p {
@@ -753,12 +723,15 @@
 
         .reveal-bg-text {
             position: absolute;
-            font-family: 'Bebas Neue', sans-serif;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 900;
+            font-style: italic;
             font-size: 30vw;
             color: var(--gray);
             opacity: 0.1;
             white-space: nowrap;
             pointer-events: none;
+            text-transform: uppercase;
         }
 
         .text-reveal-content {
@@ -816,7 +789,9 @@
         }
 
         .ticker-number {
-            font-family: 'Bebas Neue', sans-serif;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 900;
+            font-style: italic;
             font-size: 5rem;
             color: var(--dark);
         }
@@ -895,6 +870,7 @@
             font-size: clamp(5rem, 15vw, 12rem);
             line-height: 0.9;
             margin-bottom: 2rem;
+            text-transform: uppercase;
         }
 
         .contact-title .line {
@@ -1124,9 +1100,10 @@
                     <div class="product-panel">
                         <div class="product-visual">
                             <span class="product-number">01</span>
-                            <div class="product-mockup game-mockup" style="background: #1a1a1a;">
-                                <div class="product-mockup-content" style="align-items: center; padding-top: 0;">
-                                    <img src="211-logo.png" alt="211: Heist" style="width: 70%; object-fit: contain;">
+                            <div class="product-mockup lumimakers-mockup">
+                                <div class="lumimakers-bg" style="background-image: url('211-logo.png');"></div>
+                                <div class="lumimakers-img-container">
+                                    <img src="211-logo.png" alt="211: Heist">
                                 </div>
                             </div>
                         </div>
@@ -1145,8 +1122,9 @@
                     <div class="product-panel">
                         <div class="product-visual">
                             <span class="product-number">02</span>
-                            <div class="product-mockup">
-                                <div class="product-mockup-content">
+                            <div class="product-mockup lumimakers-mockup">
+                                <div class="lumimakers-bg" style="background-image: url('mocapwork.png');"></div>
+                                <div class="lumimakers-img-container">
                                     <img src="mocapwork.png" alt="Mocap Work">
                                 </div>
                             </div>
@@ -1168,9 +1146,8 @@
                             <span class="product-number">03</span>
                             <div class="product-mockup lumimakers-mockup">
                                 <div class="lumimakers-bg" style="background-image: url('lumimakers.png');"></div>
-                                <div class="lumimakers-print-container">
-                                    <img src="lumimakers.png" alt="LUMIMakers" class="lumimakers-img">
-                                    <div class="print-line"></div>
+                                <div class="lumimakers-img-container">
+                                    <img src="lumimakers.png" alt="LUMIMakers">
                                 </div>
                             </div>
                         </div>
@@ -1189,8 +1166,9 @@
                     <div class="product-panel">
                         <div class="product-visual">
                             <span class="product-number">04</span>
-                            <div class="product-mockup">
-                                <div class="product-mockup-content">
+                            <div class="product-mockup lumimakers-mockup">
+                                <div class="lumimakers-bg" style="background-image: url('deploytemplate.png');"></div>
+                                <div class="lumimakers-img-container">
                                     <img src="deploytemplate.png" alt="DeployTemplate">
                                 </div>
                             </div>
@@ -1486,16 +1464,19 @@
         });
 
         // Hero parallax
-        gsap.to('.hero-content', {
-            yPercent: 50,
-            opacity: 0,
-            scrollTrigger: {
-                trigger: '.hero',
-                start: 'top top',
-                end: 'bottom top',
-                scrub: true
+        gsap.fromTo('.hero-content', 
+            { yPercent: 0, opacity: 1 },
+            {
+                yPercent: 50,
+                opacity: 0,
+                scrollTrigger: {
+                    trigger: '.hero',
+                    start: 'top top',
+                    end: 'bottom top',
+                    scrub: true
+                }
             }
-        });
+        );
 
         // Zoom section
         const zoomTl = gsap.timeline({
@@ -1540,25 +1521,6 @@
         const techCards = gsap.utils.toArray('.tech-card');
         const techProgress = document.querySelector('.tech-progress');
         const techDots = gsap.utils.toArray('.tech-progress-dot');
-
-        // LumiMakers 3D print effect on scroll
-        const lumimakersImg = document.querySelector('.lumimakers-img');
-        const printLine = document.querySelector('.print-line');
-        
-        if (lumimakersImg && printLine) {
-            ScrollTrigger.create({
-                trigger: '.horizontal-section',
-                start: 'top top',
-                end: 'bottom bottom',
-                onUpdate: (self) => {
-                    // Trigger when we're about 50-60% through the horizontal scroll (LumiMakers panel)
-                    if (self.progress > 0.45 && self.progress < 0.65) {
-                        lumimakersImg.classList.add('printing');
-                        printLine.classList.add('printing');
-                    }
-                }
-            });
-        }
 
         // Tech header title slide in from right - only triggers once section is fully in view
         gsap.from('.tech-header h2', {
