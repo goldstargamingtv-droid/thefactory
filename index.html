@@ -6,7 +6,7 @@
     <title>The Factory Studios | Motion Capture & Game Development | Las Vegas</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@200;300;400;500;600;700;800;900&family=Source+Sans+Pro:ital,wght@1,900&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
@@ -199,7 +199,9 @@
         }
 
         .hero-title {
-            font-family: 'Bebas Neue', sans-serif;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 900;
+            font-style: italic;
             font-size: clamp(5rem, 18vw, 14rem);
             letter-spacing: 0.02em;
             line-height: 0.85;
@@ -282,7 +284,7 @@
 
         /* Zoom Reveal Section */
         .zoom-section {
-            height: 300vh;
+            height: 250vh;
             position: relative;
         }
 
@@ -316,7 +318,9 @@
         }
 
         .zoom-content h2 {
-            font-family: 'Bebas Neue', sans-serif;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 900;
+            font-style: italic;
             font-size: clamp(3rem, 8vw, 5rem);
             margin-bottom: 1.5rem;
         }
@@ -334,9 +338,10 @@
 
         /* Horizontal Scroll Products */
         .horizontal-section {
-            height: 500vh;
+            height: 900vh;
             position: relative;
             background: var(--dark);
+            z-index: 10;
         }
 
         .horizontal-container {
@@ -344,6 +349,7 @@
             top: 0;
             height: 100vh;
             overflow: hidden;
+            background: var(--dark);
         }
 
         .horizontal-track {
@@ -360,6 +366,7 @@
             justify-content: center;
             padding: 4rem;
             position: relative;
+            background: var(--dark);
         }
 
         .h-panel-intro {
@@ -367,7 +374,9 @@
         }
 
         .h-panel-intro h2 {
-            font-family: 'Bebas Neue', sans-serif;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 900;
+            font-style: italic;
             font-size: clamp(4rem, 12vw, 10rem);
             text-align: center;
         }
@@ -420,20 +429,32 @@
             right: 0;
             height: 30px;
             background: var(--gray-light);
+            z-index: 5;
+        }
+
+        .lumimakers-mockup::before {
+            display: none;
+        }
+
+        .game-mockup::before {
+            display: none;
         }
 
         .product-mockup-content {
-            padding: 50px 20px 20px;
+            padding: 30px 0 0 0;
             height: 100%;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
             background: linear-gradient(135deg, var(--darker) 0%, var(--gray) 100%);
+            overflow: hidden;
         }
 
         .product-mockup-content img {
-            width: 60%;
-            opacity: 0.6;
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            object-position: top;
         }
 
         .product-number {
@@ -446,6 +467,91 @@
             left: -3rem;
             line-height: 1;
             pointer-events: none;
+        }
+
+        /* LumiMakers Special Effect */
+        .lumimakers-mockup {
+            position: relative;
+            overflow: hidden;
+            background: var(--darker);
+        }
+
+        .lumimakers-bg {
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+            background-size: cover;
+            background-position: center;
+            filter: blur(15px) brightness(0.4);
+            transform: scale(1.1);
+        }
+
+        .lumimakers-print-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            z-index: 2;
+        }
+
+        .lumimakers-img {
+            width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            clip-path: inset(100% 0 0 0);
+            animation: printReveal 3s ease-out forwards;
+            animation-play-state: paused;
+        }
+
+        .lumimakers-mockup:hover .lumimakers-img,
+        .lumimakers-img.printing {
+            animation-play-state: running;
+        }
+
+        .print-line {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--lime), var(--lime-bright), var(--lime), transparent);
+            box-shadow: 0 0 20px var(--lime), 0 0 40px var(--lime-glow);
+            opacity: 0;
+            animation: printLine 3s ease-out forwards;
+            animation-play-state: paused;
+        }
+
+        .lumimakers-mockup:hover .print-line,
+        .print-line.printing {
+            animation-play-state: running;
+        }
+
+        @keyframes printReveal {
+            0% {
+                clip-path: inset(100% 0 0 0);
+            }
+            100% {
+                clip-path: inset(0% 0 0 0);
+            }
+        }
+
+        @keyframes printLine {
+            0% {
+                bottom: 0%;
+                opacity: 1;
+            }
+            95% {
+                opacity: 1;
+            }
+            100% {
+                bottom: 100%;
+                opacity: 0;
+            }
         }
 
         .product-info h3 {
@@ -495,80 +601,156 @@
         }
 
         /* Stacking Cards Section */
-        .stack-section {
-            min-height: 300vh;
+        .tech-section {
             position: relative;
-            padding: 10rem 0;
+            background: var(--darker);
+            overflow: hidden;
+            padding-top: 5rem;
         }
 
-        .stack-header {
-            text-align: center;
-            margin-bottom: 15rem;
+        .tech-header {
+            height: auto;
+            padding: 10rem 0 5rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             position: relative;
-            z-index: 100;
         }
 
-        .stack-header h2 {
-            font-family: 'Bebas Neue', sans-serif;
+        .tech-header h2 {
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 900;
+            font-style: italic;
             font-size: clamp(4rem, 10vw, 8rem);
-        }
-
-        .stack-header h2 span {
-            color: var(--lime);
-        }
-
-        .stack-cards {
+            text-align: center;
             position: relative;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 2rem;
+            z-index: 10;
         }
 
-        .stack-card {
-            position: sticky;
-            top: 20vh;
-            background: var(--dark);
-            border: 1px solid var(--gray);
-            border-radius: 16px;
-            padding: 4rem;
-            margin-bottom: 3rem;
-            transform-origin: center top;
-        }
-
-        .stack-card:nth-child(1) { background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%); }
-        .stack-card:nth-child(2) { background: linear-gradient(135deg, #111111 0%, #1c1c1c 100%); }
-        .stack-card:nth-child(3) { background: linear-gradient(135deg, #131313 0%, #1e1e1e 100%); }
-
-        .stack-card-number {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 6rem;
+        .tech-header h2 span {
             color: var(--lime);
-            opacity: 0.2;
+        }
+
+        .tech-header-bg {
             position: absolute;
-            top: 1rem;
-            right: 2rem;
-            line-height: 1;
-        }
-
-        .stack-card h3 {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
+            font-size: 25vw;
+            color: var(--gray);
+            opacity: 0.15;
+            white-space: nowrap;
+            pointer-events: none;
         }
 
-        .stack-card p {
+        .tech-cards-wrapper {
+            height: 350vh;
+            position: relative;
+        }
+
+        .tech-cards-container {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1000px;
+        }
+
+        .tech-card {
+            position: absolute;
+            width: 90%;
+            max-width: 1000px;
+            background: linear-gradient(135deg, var(--gray) 0%, var(--dark) 100%);
+            border: 1px solid var(--gray-light);
+            border-radius: 24px;
+            padding: 5rem;
+            display: flex;
+            gap: 4rem;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(100vh);
+        }
+
+        .tech-card-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 12rem;
+            color: var(--lime);
+            opacity: 0.15;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .tech-card-content h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.02em;
+        }
+
+        .tech-card-content p {
             color: var(--light-gray);
-            line-height: 1.8;
-            font-size: 1.05rem;
+            line-height: 1.9;
+            font-size: 1.15rem;
+        }
+
+        .tech-card-icon {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            border: 2px solid var(--lime);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tech-card-icon svg {
+            width: 28px;
+            height: 28px;
+            stroke: var(--lime);
+        }
+
+        .tech-progress {
+            position: fixed;
+            right: 3rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .tech-progress.active {
+            opacity: 1;
+        }
+
+        .tech-progress-dot {
+            width: 12px;
+            height: 12px;
+            border: 2px solid var(--gray-light);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .tech-progress-dot.active {
+            background: var(--lime);
+            border-color: var(--lime);
+            box-shadow: 0 0 20px var(--lime-glow);
         }
 
         /* Text Reveal Section */
         .text-reveal-section {
-            min-height: 100vh;
+            min-height: 80vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 8rem 4rem;
+            padding: 10rem 4rem;
             position: relative;
             overflow: hidden;
         }
@@ -613,7 +795,7 @@
 
         /* Stats Ticker */
         .stats-ticker {
-            padding: 6rem 0;
+            padding: 5rem 0;
             background: var(--lime);
             overflow: hidden;
         }
@@ -665,7 +847,7 @@
 
         /* Contact Section */
         .contact {
-            min-height: 100vh;
+            min-height: 80vh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -711,7 +893,9 @@
         }
 
         .contact-title {
-            font-family: 'Bebas Neue', sans-serif;
+            font-family: 'Source Sans Pro', sans-serif;
+            font-weight: 900;
+            font-style: italic;
             font-size: clamp(5rem, 15vw, 12rem);
             line-height: 0.9;
             margin-bottom: 2rem;
@@ -821,6 +1005,23 @@
             .product-visual {
                 height: 300px;
             }
+
+            .tech-card {
+                flex-direction: column;
+                padding: 3rem;
+                gap: 2rem;
+            }
+
+            .tech-card-number {
+                font-size: 8rem;
+                position: absolute;
+                top: 1rem;
+                left: 2rem;
+            }
+
+            .tech-card-content {
+                padding-top: 2rem;
+            }
         }
 
         @media (max-width: 768px) {
@@ -840,8 +1041,16 @@
                 font-size: 2.5rem;
             }
 
-            .stack-card {
+            .tech-card {
                 padding: 2rem;
+            }
+
+            .tech-card-content h3 {
+                font-size: 2rem;
+            }
+
+            .tech-progress {
+                right: 1rem;
             }
 
             footer {
@@ -887,7 +1096,7 @@
                     <span class="line-1">THE</span>
                     <span class="line-2">FACTORY</span>
                 </h1>
-                <p class="hero-subtitle">Motion Capture • Game Development • 3D Printing</p>
+                <p class="hero-subtitle">Motion Capture • Game Development • 3D Printing • Web Design</p>
             </div>
         </div>
         <div class="scroll-cta">
@@ -919,9 +1128,9 @@
                     <div class="product-panel">
                         <div class="product-visual">
                             <span class="product-number">01</span>
-                            <div class="product-mockup">
-                                <div class="product-mockup-content">
-                                    <img src="logo-dark.png" alt="211: Heist">
+                            <div class="product-mockup game-mockup" style="background: #1a1a1a;">
+                                <div class="product-mockup-content" style="align-items: center; padding-top: 0;">
+                                    <img src="211-logo.png" alt="211: Heist" style="width: 70%; object-fit: contain;">
                                 </div>
                             </div>
                         </div>
@@ -942,7 +1151,7 @@
                             <span class="product-number">02</span>
                             <div class="product-mockup">
                                 <div class="product-mockup-content">
-                                    <img src="logo-dark.png" alt="Mocap Work">
+                                    <img src="mocapwork.png" alt="Mocap Work">
                                 </div>
                             </div>
                         </div>
@@ -961,9 +1170,11 @@
                     <div class="product-panel">
                         <div class="product-visual">
                             <span class="product-number">03</span>
-                            <div class="product-mockup">
-                                <div class="product-mockup-content">
-                                    <img src="logo-dark.png" alt="LUMIMakers">
+                            <div class="product-mockup lumimakers-mockup">
+                                <div class="lumimakers-bg" style="background-image: url('lumimakers.png');"></div>
+                                <div class="lumimakers-print-container">
+                                    <img src="lumimakers.png" alt="LUMIMakers" class="lumimakers-img">
+                                    <div class="print-line"></div>
                                 </div>
                             </div>
                         </div>
@@ -978,31 +1189,86 @@
                         </div>
                     </div>
                 </div>
+                <div class="h-panel">
+                    <div class="product-panel">
+                        <div class="product-visual">
+                            <span class="product-number">04</span>
+                            <div class="product-mockup">
+                                <div class="product-mockup-content">
+                                    <img src="deploytemplate.png" alt="DeployTemplate">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-tag">Web Design & Development</div>
+                            <h3>DeployTemplate</h3>
+                            <p>Premium web design and development solutions. We craft stunning, high-performance websites and applications that elevate brands and deliver exceptional user experiences.</p>
+                            <a href="#" class="product-link">
+                                Visit DeployTemplate
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Stacking Cards - Values -->
-    <section class="stack-section" id="technology">
-        <div class="stack-header">
+    <!-- Technology Section -->
+    <section class="tech-section" id="technology">
+        <div class="tech-header">
+            <div class="tech-header-bg">TECHNOLOGY</div>
             <h2>Our <span>Technology</span></h2>
         </div>
-        <div class="stack-cards">
-            <div class="stack-card">
-                <span class="stack-card-number">01</span>
-                <h3>Full Vicon Motion Capture</h3>
-                <p>Industry-leading motion capture technology capturing every nuance of human movement. Our stage delivers the precision and fidelity that brings digital characters to life with unmatched realism.</p>
+        <div class="tech-cards-wrapper">
+            <div class="tech-cards-container">
+                <div class="tech-card" data-card="0">
+                    <div class="tech-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                        </svg>
+                    </div>
+                    <div class="tech-card-number">01</div>
+                    <div class="tech-card-content">
+                        <h3>Full Vicon Motion Capture</h3>
+                        <p>Industry-leading motion capture technology capturing every nuance of human movement. Our stage delivers the precision and fidelity that brings digital characters to life with unmatched realism.</p>
+                    </div>
+                </div>
+                <div class="tech-card" data-card="1">
+                    <div class="tech-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                            <polyline points="2 17 12 22 22 17"/>
+                            <polyline points="2 12 12 17 22 12"/>
+                        </svg>
+                    </div>
+                    <div class="tech-card-number">02</div>
+                    <div class="tech-card-content">
+                        <h3>Unreal Engine 5 Pipeline</h3>
+                        <p>Next-generation game development powered by Unreal Engine 5. From real-time rendering to advanced physics, we leverage cutting-edge technology to create immersive experiences.</p>
+                    </div>
+                </div>
+                <div class="tech-card" data-card="2">
+                    <div class="tech-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                            <path d="M2 17l10 5 10-5"/>
+                            <path d="M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <div class="tech-card-number">03</div>
+                    <div class="tech-card-content">
+                        <h3>Rapid Prototyping</h3>
+                        <p>World-class 3D printing and prototyping capabilities. We transform digital concepts into physical reality, enabling rapid iteration and tangible innovation at every stage of development.</p>
+                    </div>
+                </div>
             </div>
-            <div class="stack-card">
-                <span class="stack-card-number">02</span>
-                <h3>Unreal Engine 5 Pipeline</h3>
-                <p>Next-generation game development powered by Unreal Engine 5. From real-time rendering to advanced physics, we leverage cutting-edge technology to create immersive experiences.</p>
-            </div>
-            <div class="stack-card">
-                <span class="stack-card-number">03</span>
-                <h3>Rapid Prototyping</h3>
-                <p>World-class 3D printing and prototyping capabilities. We transform digital concepts into physical reality, enabling rapid iteration and tangible innovation at every stage of development.</p>
-            </div>
+        </div>
+        <div class="tech-progress">
+            <div class="tech-progress-dot" data-dot="0"></div>
+            <div class="tech-progress-dot" data-dot="1"></div>
+            <div class="tech-progress-dot" data-dot="2"></div>
         </div>
     </section>
 
@@ -1057,7 +1323,7 @@
                 </div>
                 <div class="ticker-divider"></div>
                 <div class="ticker-stat">
-                    <span class="ticker-number">3</span>
+                    <span class="ticker-number">4</span>
                     <span class="ticker-label">Products</span>
                 </div>
                 <div class="ticker-divider"></div>
@@ -1079,7 +1345,7 @@
                 </div>
                 <div class="ticker-divider"></div>
                 <div class="ticker-stat">
-                    <span class="ticker-number">3</span>
+                    <span class="ticker-number">4</span>
                     <span class="ticker-label">Products</span>
                 </div>
                 <div class="ticker-divider"></div>
@@ -1255,32 +1521,132 @@
             }
         });
 
-        // Stacking cards
-        const stackCards = gsap.utils.toArray('.stack-card');
-        
-        stackCards.forEach((card, i) => {
-            const scale = 1 - (stackCards.length - i) * 0.03;
-            
-            ScrollTrigger.create({
-                trigger: card,
-                start: 'top 20%',
-                end: 'bottom 20%',
-                endTrigger: '.stack-section',
-                pin: true,
-                pinSpacing: false
-            });
+        // Technology Cards Animation
+        const techCards = gsap.utils.toArray('.tech-card');
+        const techProgress = document.querySelector('.tech-progress');
+        const techDots = gsap.utils.toArray('.tech-progress-dot');
 
-            if (i < stackCards.length - 1) {
-                gsap.to(card, {
-                    scale: scale,
-                    filter: `brightness(${0.7 + i * 0.1})`,
-                    scrollTrigger: {
-                        trigger: stackCards[i + 1],
-                        start: 'top bottom',
-                        end: 'top 20%',
-                        scrub: true
+        // LumiMakers 3D print effect on scroll
+        const lumimakersImg = document.querySelector('.lumimakers-img');
+        const printLine = document.querySelector('.print-line');
+        
+        if (lumimakersImg && printLine) {
+            ScrollTrigger.create({
+                trigger: '.horizontal-section',
+                start: 'top top',
+                end: 'bottom bottom',
+                onUpdate: (self) => {
+                    // Trigger when we're about 50-60% through the horizontal scroll (LumiMakers panel)
+                    if (self.progress > 0.45 && self.progress < 0.65) {
+                        lumimakersImg.classList.add('printing');
+                        printLine.classList.add('printing');
+                    }
+                }
+            });
+        }
+
+        // Tech header title slide in from right - only triggers once section is fully in view
+        gsap.from('.tech-header h2', {
+            x: 300,
+            opacity: 0,
+            duration: 1.2,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: '.tech-header',
+                start: 'top 85%',
+                toggleActions: 'play none none none'
+            }
+        });
+        
+        // Show progress dots when in tech section
+        ScrollTrigger.create({
+            trigger: '.tech-cards-wrapper',
+            start: 'top center',
+            end: 'bottom center',
+            onEnter: () => techProgress.classList.add('active'),
+            onLeave: () => techProgress.classList.remove('active'),
+            onEnterBack: () => techProgress.classList.add('active'),
+            onLeaveBack: () => techProgress.classList.remove('active')
+        });
+
+        // Animate each card
+        const techTl = gsap.timeline({
+            scrollTrigger: {
+                trigger: '.tech-cards-wrapper',
+                start: 'top top',
+                end: 'bottom bottom',
+                scrub: 1,
+                pin: '.tech-cards-container'
+            }
+        });
+
+        techCards.forEach((card, i) => {
+            const startTime = i * 0.33;
+            const endTime = startTime + 0.28;
+            
+            // Card enters
+            techTl.fromTo(card, 
+                { 
+                    opacity: 0, 
+                    y: '100vh',
+                    rotateX: 15,
+                    scale: 0.9
+                },
+                { 
+                    opacity: 1, 
+                    y: 0,
+                    rotateX: 0,
+                    scale: 1,
+                    duration: 0.15,
+                    ease: 'power2.out'
+                },
+                startTime
+            );
+            
+            // Card exits (except last one)
+            if (i < techCards.length - 1) {
+                techTl.to(card, 
+                    { 
+                        opacity: 0, 
+                        y: '-50vh',
+                        rotateX: -10,
+                        scale: 0.95,
+                        duration: 0.15,
+                        ease: 'power2.in'
+                    },
+                    endTime
+                );
+            }
+        });
+
+        // Update progress dots
+        ScrollTrigger.create({
+            trigger: '.tech-cards-wrapper',
+            start: 'top top',
+            end: 'bottom bottom',
+            onUpdate: (self) => {
+                const progress = self.progress;
+                let activeIndex = Math.floor(progress * 3);
+                if (activeIndex > 2) activeIndex = 2;
+                
+                techDots.forEach((dot, i) => {
+                    if (i <= activeIndex) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
                     }
                 });
+            }
+        });
+
+        // Tech header parallax
+        gsap.to('.tech-header-bg', {
+            xPercent: -30,
+            scrollTrigger: {
+                trigger: '.tech-header',
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: true
             }
         });
 
