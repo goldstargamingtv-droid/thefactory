@@ -834,6 +834,42 @@
             gap: 1.5rem;
         }
 
+        /* Parallax hover effect */
+        .product-visual {
+            perspective: 1000px;
+        }
+
+        .product-mockup {
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
+        }
+
+        .product-mockup .lumimakers-img-container img {
+            transition: transform 0.1s ease-out;
+        }
+
+        .product-mockup:hover .lumimakers-img-container img {
+            transform: translateZ(30px) scale(1.05);
+        }
+
+        .product-mockup::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%, rgba(0,0,0,0.2) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .product-mockup:hover::after {
+            opacity: 1;
+        }
+
         /* Stacking Cards Section */
         .tech-section {
             position: relative;
@@ -1210,14 +1246,23 @@
             padding: 4rem;
             border-top: 1px solid var(--gray);
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            justify-content: center;
             align-items: center;
+            gap: 1.5rem;
         }
 
         .footer-logo {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 1.2rem;
             letter-spacing: 0.25em;
+        }
+
+        .footer-logo-img {
+            width: 60px;
+            height: auto;
+            filter: grayscale(100%) brightness(0.7);
+            opacity: 0.6;
         }
 
         .footer-links {
@@ -1631,7 +1676,7 @@
 
     <!-- Navigation -->
     <nav role="navigation" aria-label="Main navigation">
-        <a href="#" class="nav-logo" aria-label="The Factory Studios - Home">THE FACTORY STUDIOS</a>
+        <a href="#" class="nav-logo" aria-label="The Factory Studios - Home" id="navLogo">THE FACTORY STUDIOS</a>
         <div class="nav-links">
             <a href="#about">About</a>
             <a href="#products">Products</a>
@@ -1978,6 +2023,7 @@
 
     <!-- Footer -->
     <footer role="contentinfo">
+        <img src="images/logo-color.png" alt="The Factory Studios" class="footer-logo-img">
         <div class="footer-logo">THE FACTORY STUDIOS</div>
         <div class="footer-links">
             <a href="https://twitter.com/factorystudios" aria-label="Follow The Factory Studios on Twitter" rel="noopener noreferrer" target="_blank">Twitter</a>
@@ -2412,6 +2458,16 @@
             });
         });
 
+        // Logo click scrolls to top
+        document.getElementById('navLogo').addEventListener('click', function(e) {
+            e.preventDefault();
+            gsap.to(window, {
+                duration: 1.5,
+                scrollTo: { y: 0, offsetY: 0 },
+                ease: 'power3.inOut'
+            });
+        });
+
         // Nav scroll effect - simple like MocapWork
         window.addEventListener('scroll', () => {
             const navElement = document.querySelector('nav');
@@ -2429,6 +2485,28 @@
             resizeTimer = setTimeout(() => {
                 ScrollTrigger.refresh();
             }, 250);
+        });
+
+        // Parallax cursor hover effect on product images
+        const productMockups = document.querySelectorAll('.product-mockup');
+        
+        productMockups.forEach(mockup => {
+            mockup.addEventListener('mousemove', (e) => {
+                const rect = mockup.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                
+                mockup.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+            });
+            
+            mockup.addEventListener('mouseleave', () => {
+                mockup.style.transform = 'rotateX(0) rotateY(0) scale(1)';
+            });
         });
     </script>
 </body>
