@@ -168,6 +168,87 @@
             background: var(--darker);
             color: var(--white);
             overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* Custom Cursor */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--lime);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 999999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease, opacity 0.3s ease;
+        }
+
+        .cursor-ring {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--lime);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 999998;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+        }
+
+        .cursor-ring.expanded {
+            width: 60px;
+            height: 60px;
+            background: rgba(126, 211, 33, 0.1);
+            border-color: var(--lime-bright);
+        }
+
+        /* Hide custom cursor on mobile/touch */
+        @media (hover: none) and (pointer: coarse) {
+            .cursor-dot, .cursor-ring { display: none; }
+            body { cursor: auto; }
+            a, button { cursor: auto; }
+        }
+
+        a, button {
+            cursor: none;
+        }
+
+        /* Grain Texture Overlay */
+        .grain-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 99998;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--darker);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--lime);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--lime-bright);
+        }
+
+        /* Firefox scrollbar */
+        html {
+            scrollbar-width: thin;
+            scrollbar-color: var(--lime) var(--darker);
         }
 
         /* Preloader */
@@ -251,7 +332,7 @@
             letter-spacing: 0.2em;
             text-transform: uppercase;
             font-weight: 500;
-            transition: color 0.3s ease;
+            transition: color 0.3s ease, transform 0.2s ease;
         }
 
         .nav-links a:hover {
@@ -827,7 +908,7 @@
             text-transform: uppercase;
             padding: 1rem 0;
             border-bottom: 1px solid var(--lime);
-            transition: gap 0.3s ease;
+            transition: gap 0.3s ease, transform 0.2s ease;
         }
 
         .product-link:hover {
@@ -1218,11 +1299,11 @@
             text-decoration: none;
             position: relative;
             overflow: hidden;
-            transition: transform 0.3s ease;
+            transition: transform 0.2s ease;
         }
 
         .contact-btn:hover {
-            transform: scale(1.05);
+            filter: brightness(1.1);
         }
 
         .contact-btn::before {
@@ -1259,7 +1340,7 @@
         }
 
         .footer-logo-img {
-            width: 60px;
+            width: 120px;
             height: auto;
             filter: grayscale(100%) brightness(0.7);
             opacity: 0.6;
@@ -1666,6 +1747,13 @@
     </style>
 </head>
 <body>
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+    
+    <!-- Grain Overlay -->
+    <div class="grain-overlay"></div>
+
     <!-- Preloader -->
     <div class="preloader" aria-hidden="true">
         <img src="images/logo-color.png" alt="The Factory Studios" class="preloader-logo">
@@ -2506,6 +2594,55 @@
             
             mockup.addEventListener('mouseleave', () => {
                 mockup.style.transform = 'rotateX(0) rotateY(0) scale(1)';
+            });
+        });
+
+        // Custom Cursor
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorRing = document.querySelector('.cursor-ring');
+        
+        let mouseX = 0, mouseY = 0;
+        let ringX = 0, ringY = 0;
+        
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursorDot.style.left = mouseX + 'px';
+            cursorDot.style.top = mouseY + 'px';
+        });
+        
+        // Smooth ring follow
+        function animateRing() {
+            ringX += (mouseX - ringX) * 0.15;
+            ringY += (mouseY - ringY) * 0.15;
+            cursorRing.style.left = ringX + 'px';
+            cursorRing.style.top = ringY + 'px';
+            requestAnimationFrame(animateRing);
+        }
+        animateRing();
+        
+        // Expand cursor on interactive elements
+        const interactiveElements = document.querySelectorAll('a, button, .product-mockup, .nav-links a, .contact-btn, .product-link');
+        
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => cursorRing.classList.add('expanded'));
+            el.addEventListener('mouseleave', () => cursorRing.classList.remove('expanded'));
+        });
+
+        // Magnetic Buttons
+        const magneticElements = document.querySelectorAll('.contact-btn, .nav-links a, .product-link');
+        
+        magneticElements.forEach(el => {
+            el.addEventListener('mousemove', (e) => {
+                const rect = el.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                el.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+            });
+            
+            el.addEventListener('mouseleave', () => {
+                el.style.transform = 'translate(0, 0)';
             });
         });
     </script>
