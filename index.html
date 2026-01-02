@@ -7,7 +7,7 @@
     <!-- Primary SEO Meta Tags -->
     <title>The Factory Studios | Motion Capture, Game Development & Web Design Studio in Las Vegas</title>
     <meta name="description" content="The Factory Studios is Las Vegas's leading motion capture studio, game development company, web design agency, and 3D printing facility. Featuring Vicon motion capture, Unreal Engine 5 development, premium web design, and rapid prototyping services.">
-    <meta name="keywords" content="motion capture studio Las Vegas, game development Las Vegas, web design Las Vegas, custom dice, resin dice, D&D dice, tabletop gaming accessories, dice vault, Vicon motion capture, Unreal Engine 5 development, 3D printing Las Vegas, web development agency, UI UX design, mocap services, character animation, game studio Nevada, website design, full stack development, motion capture rental, virtual production, digital content creation, rapid prototyping">
+    <meta name="keywords" content="motion capture studio Las Vegas, game development Las Vegas, web design Las Vegas, Vicon motion capture, Unreal Engine 5 development, 3D printing Las Vegas, web development agency, UI UX design, mocap services, character animation, game studio Nevada, website design, full stack development, motion capture rental, virtual production, digital content creation, rapid prototyping">
     <meta name="author" content="The Factory Studios">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://thefactorystudios.com/">
@@ -700,7 +700,7 @@
 
         /* Horizontal Scroll Products */
         .horizontal-section {
-            height: 1100vh;
+            height: 900vh;
             position: relative;
             background: var(--dark);
         }
@@ -997,7 +997,7 @@
         }
 
         .tech-cards-wrapper {
-            height: 600vh;
+            height: 500vh;
             position: relative;
         }
 
@@ -1929,28 +1929,6 @@
                         </div>
                     </article>
                 </div>
-                <div class="h-panel">
-                    <article class="product-panel">
-                        <div class="product-visual">
-                            <span class="product-number" aria-hidden="true">05</span>
-                            <div class="product-mockup lumimakers-mockup">
-                                <div class="lumimakers-bg" style="background-image: url('images/ward-gaming.png');"></div>
-                                <div class="lumimakers-img-container">
-                                    <img src="images/ward-gaming.png" alt="Ward Gaming - Custom Resin Dice and Dice Vaults for D&D and Tabletop Gaming" loading="lazy">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-tag">Custom Dice & Accessories</div>
-                            <h3>Ward Gaming</h3>
-                            <p>Handcrafted premium resin dice and customizable dice vaults for tabletop RPG enthusiasts. Specializing in stunning D20s and polyhedral sets for Dungeons & Dragons, Pathfinder, and beyond—each piece a unique work of art.</p>
-                            <a href="#" class="product-link" aria-label="Visit Ward Gaming website">
-                                Coming Soon
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                            </a>
-                        </div>
-                    </article>
-                </div>
             </div>
         </div>
     </section>
@@ -2018,18 +1996,6 @@
                         <p>Modern web architecture using React, Next.js, and cutting-edge frameworks. We build lightning-fast, SEO-optimized websites and web applications with stunning UI/UX design, responsive layouts, and seamless user experiences that drive conversions.</p>
                     </div>
                 </article>
-                <article class="tech-card" data-card="4">
-                    <div class="tech-card-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                        </svg>
-                    </div>
-                    <div class="tech-card-number" aria-hidden="true">05</div>
-                    <div class="tech-card-content">
-                        <h3>Artisan Resin Casting & Dice Manufacturing</h3>
-                        <p>Precision resin casting techniques for creating stunning custom dice and gaming accessories. From hand-mixed pigments to pressure-cured molds, our Ward Gaming division crafts museum-quality polyhedral dice and bespoke dice vaults for tabletop enthusiasts.</p>
-                    </div>
-                </article>
             </div>
         </div>
         <div class="tech-progress" aria-hidden="true">
@@ -2037,7 +2003,6 @@
             <div class="tech-progress-dot" data-dot="1"></div>
             <div class="tech-progress-dot" data-dot="2"></div>
             <div class="tech-progress-dot" data-dot="3"></div>
-            <div class="tech-progress-dot" data-dot="4"></div>
         </div>
     </section>
 
@@ -2097,7 +2062,7 @@
                 </div>
                 <div class="ticker-divider"></div>
                 <div class="ticker-stat">
-                    <span class="ticker-number">5</span>
+                    <span class="ticker-number">4</span>
                     <span class="ticker-label">Flagship Products</span>
                 </div>
                 <div class="ticker-divider"></div>
@@ -2119,7 +2084,7 @@
                 </div>
                 <div class="ticker-divider"></div>
                 <div class="ticker-stat">
-                    <span class="ticker-number">5</span>
+                    <span class="ticker-number">4</span>
                     <span class="ticker-label">Flagship Products</span>
                 </div>
                 <div class="ticker-divider"></div>
@@ -2141,7 +2106,7 @@
                 </div>
                 <div class="ticker-divider"></div>
                 <div class="ticker-stat">
-                    <span class="ticker-number">5</span>
+                    <span class="ticker-number">4</span>
                     <span class="ticker-label">Flagship Products</span>
                 </div>
                 <div class="ticker-divider"></div>
@@ -2438,9 +2403,9 @@
             });
 
             techCards.forEach((card, i) => {
-                // Timing: cards appear at 0, 0.20, 0.40, 0.60, 0.80
-                const startTime = i * 0.20;
-                const exitTime = (i + 1) * 0.20 - 0.05;
+                // Timing: cards appear at 0, 0.25, 0.50, 0.75
+                const startTime = i * 0.25;
+                const exitTime = (i + 1) * 0.25 - 0.05;
                 
                 // All cards animate in
                 techTl.fromTo(card, 
@@ -2485,9 +2450,9 @@
                 onUpdate: (self) => {
                     const progress = self.progress;
                     
-                    // Dots light up when cards are visible: 0.04, 0.24, 0.44, 0.64, 0.84
+                    // Dots light up when cards are visible: 0.04, 0.29, 0.54, 0.79
                     techDots.forEach((dot, i) => {
-                        const threshold = i * 0.20 + 0.04;
+                        const threshold = i * 0.25 + 0.04;
                         if (progress >= threshold) {
                             dot.classList.add('active');
                         } else {
