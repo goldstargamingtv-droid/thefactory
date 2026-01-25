@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1846,7 +1846,7 @@
                         <div class="product-visual">
                             <span class="product-number" aria-hidden="true">01</span>
                             <div class="product-mockup lumimakers-mockup">
-                                <div class="lumimakers-bg" style="background-image: url('images/211-logo.png');"></div>
+                                <div class="lumimakers-bg" style="background-image: url('images/211-logo.png');" role="presentation" aria-hidden="true"></div>
                                 <div class="lumimakers-img-container">
                                     <img src="images/211-logo.png" alt="211: Heist - AAA Heist Action Game by The Factory Studios" loading="lazy">
                                 </div>
@@ -1868,7 +1868,7 @@
                         <div class="product-visual">
                             <span class="product-number" aria-hidden="true">02</span>
                             <div class="product-mockup lumimakers-mockup">
-                                <div class="lumimakers-bg" style="background-image: url('images/mocapwork.png');"></div>
+                                <div class="lumimakers-bg" style="background-image: url('images/mocapwork.png');" role="presentation" aria-hidden="true"></div>
                                 <div class="lumimakers-img-container">
                                     <img src="images/mocapwork.png" alt="Mocap Work - Professional Motion Capture Animation Platform" loading="lazy">
                                 </div>
@@ -1890,7 +1890,7 @@
                         <div class="product-visual">
                             <span class="product-number" aria-hidden="true">03</span>
                             <div class="product-mockup lumimakers-mockup">
-                                <div class="lumimakers-bg" style="background-image: url('images/lumimakers.png');"></div>
+                                <div class="lumimakers-bg" style="background-image: url('images/lumimakers.png');" role="presentation" aria-hidden="true"></div>
                                 <div class="lumimakers-img-container">
                                     <img src="images/lumimakers.png" alt="LUMIMakers - Professional 3D Printing and Rapid Prototyping Services" loading="lazy">
                                 </div>
@@ -1912,7 +1912,7 @@
                         <div class="product-visual">
                             <span class="product-number" aria-hidden="true">04</span>
                             <div class="product-mockup lumimakers-mockup">
-                                <div class="lumimakers-bg" style="background-image: url('images/deploytemplate.png');"></div>
+                                <div class="lumimakers-bg" style="background-image: url('images/deploytemplate.png');" role="presentation" aria-hidden="true"></div>
                                 <div class="lumimakers-img-container">
                                     <img src="images/deploytemplate.png" alt="DeployTemplate - Premium Web Design and Development Services" loading="lazy">
                                 </div>
@@ -2146,6 +2146,14 @@
     </footer>
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Animation constants
+        const CURSOR_EASING = 0.15;
+        const RESIZE_DEBOUNCE_MS = 250;
+        const CARD_PROGRESS_OFFSET = 0.04;
+        const CARD_PROGRESS_STEP = 0.25;
+        const NAV_SCROLL_THRESHOLD = 20;
+        const MAGNETIC_STRENGTH = 0.3;
+
         gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
         // Mobile Menu
@@ -2185,16 +2193,21 @@
         // Hero text animation - split into chars
         const heroLine1 = document.querySelector('.hero-title .line-1');
         const heroLine2 = document.querySelector('.hero-title .line-2');
-        
+
         function splitText(element) {
+            if (!element) return;
             const text = element.textContent;
-            element.innerHTML = text.split('').map(char => 
-                `<span class="char">${char === ' ' ? '&nbsp;' : char}</span>`
-            ).join('');
+            element.textContent = '';
+            text.split('').forEach(char => {
+                const span = document.createElement('span');
+                span.className = 'char';
+                span.textContent = char === ' ' ? '\u00A0' : char;
+                element.appendChild(span);
+            });
         }
-        
-        splitText(heroLine1);
-        splitText(heroLine2);
+
+        if (heroLine1) splitText(heroLine1);
+        if (heroLine2) splitText(heroLine2);
         
         // Set chars hidden initially
         gsap.set('.hero-title .char', { opacity: 0, y: 100, rotateX: -90 });
@@ -2450,9 +2463,9 @@
                 onUpdate: (self) => {
                     const progress = self.progress;
                     
-                    // Dots light up when cards are visible: 0.04, 0.29, 0.54, 0.79
+                    // Dots light up when cards are visible
                     techDots.forEach((dot, i) => {
-                        const threshold = i * 0.25 + 0.04;
+                        const threshold = i * CARD_PROGRESS_STEP + CARD_PROGRESS_OFFSET;
                         if (progress >= threshold) {
                             dot.classList.add('active');
                         } else {
@@ -2581,14 +2594,16 @@
         });
 
         // Nav scroll effect - simple like MocapWork
-        window.addEventListener('scroll', () => {
-            const navElement = document.querySelector('nav');
-            if (window.scrollY > 20) {
+        const navElement = document.querySelector('nav');
+        function handleNavScroll() {
+            if (!navElement) return;
+            if (window.scrollY > NAV_SCROLL_THRESHOLD) {
                 navElement.classList.add('scrolled');
             } else {
                 navElement.classList.remove('scrolled');
             }
-        });
+        }
+        window.addEventListener('scroll', handleNavScroll);
 
         // Refresh ScrollTrigger on resize
         let resizeTimer;
@@ -2596,7 +2611,7 @@
             clearTimeout(resizeTimer);
             resizeTimer = setTimeout(() => {
                 ScrollTrigger.refresh();
-            }, 250);
+            }, RESIZE_DEBOUNCE_MS);
         });
 
         // Parallax cursor hover effect on product images
@@ -2637,8 +2652,8 @@
         
         // Smooth ring follow
         function animateRing() {
-            ringX += (mouseX - ringX) * 0.15;
-            ringY += (mouseY - ringY) * 0.15;
+            ringX += (mouseX - ringX) * CURSOR_EASING;
+            ringY += (mouseY - ringY) * CURSOR_EASING;
             cursorRing.style.left = ringX + 'px';
             cursorRing.style.top = ringY + 'px';
             requestAnimationFrame(animateRing);
@@ -2662,7 +2677,7 @@
                 const x = e.clientX - rect.left - rect.width / 2;
                 const y = e.clientY - rect.top - rect.height / 2;
                 
-                el.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+                el.style.transform = `translate(${x * MAGNETIC_STRENGTH}px, ${y * MAGNETIC_STRENGTH}px)`;
             });
             
           
