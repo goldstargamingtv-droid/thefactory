@@ -140,6 +140,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
     <style>
         * {
             margin: 0;
@@ -258,7 +267,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--darker);
+            background-color: #000000;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23ffffff' fill-opacity='0.01' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
             z-index: 99999;
             display: flex;
             align-items: center;
@@ -267,23 +277,75 @@
             gap: 2rem;
         }
 
-        .preloader-logo {
-            width: 120px;
-            opacity: 0;
+        #preloader-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .preloader-ui {
+            position: absolute;
+            top: 68%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .preloader-text {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 0.3em;
+            color: var(--light-gray);
+            text-transform: uppercase;
         }
 
         .preloader-bar {
-            width: 200px;
-            height: 2px;
-            background: var(--gray);
-            border-radius: 2px;
-            overflow: hidden;
+            position: relative;
+            width: 120px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            overflow: visible;
         }
 
         .preloader-progress {
             height: 100%;
             width: 0%;
             background: var(--lime);
+            box-shadow: 0 0 20px var(--lime-glow), 0 0 40px var(--lime-glow);
+            position: relative;
+        }
+
+        .preloader-progress::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            background: var(--lime);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--lime), 0 0 20px var(--lime);
+        }
+
+        .preloader-percent {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            color: var(--lime);
+            margin-top: 0.5rem;
+        }
+
+        /* Lock scroll during preloader */
+        body.loading {
+            overflow: hidden;
         }
 
         /* Navigation */
@@ -655,6 +717,20 @@
             will-change: transform, opacity;
             text-transform: uppercase;
             opacity: 0.3;
+        }
+
+        #zoom-model-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            will-change: transform, opacity;
+            z-index: 5;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            transform-origin: center center;
         }
 
         .zoom-content {
@@ -1748,19 +1824,24 @@
         }
     </style>
 </head>
-<body>
+<body class="loading">
+    <script>window.scrollTo(0,0);if(history.scrollRestoration)history.scrollRestoration='manual';</script>
     <!-- Custom Cursor -->
     <div class="cursor-dot"></div>
     <div class="cursor-ring"></div>
-    
+
     <!-- Grain Overlay -->
     <div class="grain-overlay"></div>
 
     <!-- Preloader -->
     <div class="preloader" aria-hidden="true">
-        <img src="images/logo-color.png" alt="The Factory Studios" class="preloader-logo">
-        <div class="preloader-bar">
-            <div class="preloader-progress"></div>
+        <canvas id="preloader-canvas"></canvas>
+        <div class="preloader-ui">
+            <span class="preloader-text">Loading</span>
+            <div class="preloader-bar">
+                <div class="preloader-progress"></div>
+            </div>
+            <span class="preloader-percent">0%</span>
         </div>
     </div>
 
@@ -1825,6 +1906,7 @@
     <!-- Zoom Text Section -->
     <section class="zoom-section" id="about" aria-label="About The Factory Studios">
         <div class="zoom-container">
+            <canvas id="zoom-model-canvas" aria-hidden="true"></canvas>
             <div class="zoom-text" aria-hidden="true">INNOVATE</div>
             <div class="zoom-content">
                 <h2><span class="line-1">Reshaping <span>Industry</span></span><br><span>Standards</span></h2>
@@ -1912,18 +1994,18 @@
                         <div class="product-visual">
                             <span class="product-number" aria-hidden="true">04</span>
                             <div class="product-mockup lumimakers-mockup">
-                                <div class="lumimakers-bg" style="background-image: url('images/deploytemplate.png');" role="presentation" aria-hidden="true"></div>
+                                <div class="lumimakers-bg" style="background-image: url('images/iterex.png');" role="presentation" aria-hidden="true"></div>
                                 <div class="lumimakers-img-container">
-                                    <img src="images/deploytemplate.png" alt="DeployTemplate - Premium Web Design and Development Services" loading="lazy">
+                                    <img src="images/iterex.png" alt="Iterex - Premium Web Design and Development Services" loading="lazy">
                                 </div>
                             </div>
                         </div>
                         <div class="product-info">
                             <div class="product-tag">Web Design & Development</div>
-                            <h3>DeployTemplate</h3>
+                            <h3>Iterex</h3>
                             <p>Award-winning web design and full-stack development solutions. We build stunning, high-performance websites and web applications that convert visitors into customers—with cutting-edge UI/UX, blazing-fast load times, and SEO optimization built-in.</p>
-                            <a href="#" class="product-link" aria-label="Visit DeployTemplate website">
-                                Visit DeployTemplate
+                            <a href="https://iterex.dev" class="product-link" aria-label="Visit Iterex website">
+                                Visit Iterex
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                             </a>
                         </div>
@@ -2145,6 +2227,530 @@
         <div class="footer-copy">© 2025 The Factory Studios. Motion Capture, Game Development & Web Design. Las Vegas, NV.</div>
     </footer>
 
+    <!-- Three.js Preloader -->
+    <script type="module">
+        import * as THREE from 'three';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+        import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+
+        // Holographic shader
+        const holographicVertexShader = `
+            varying vec3 vNormal;
+            varying vec3 vWorldPosition;
+            varying vec4 vScreenPos;
+
+            void main() {
+                vNormal = normalize(normalMatrix * normal);
+                vec4 worldPos = modelMatrix * vec4(position, 1.0);
+                vWorldPosition = worldPos.xyz;
+                vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+                gl_Position = projectionMatrix * mvPosition;
+                vScreenPos = gl_Position;
+            }
+        `;
+
+        const holographicFragmentShader = `
+            uniform float uTime;
+            uniform sampler2D uBackground;
+            uniform vec2 uResolution;
+
+            varying vec3 vNormal;
+            varying vec3 vWorldPosition;
+            varying vec4 vScreenPos;
+
+            // Simple noise function
+            float hash(vec2 p) {
+                return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+            }
+
+            float noise(vec2 p) {
+                vec2 i = floor(p);
+                vec2 f = fract(p);
+                f = f * f * (3.0 - 2.0 * f);
+
+                float a = hash(i);
+                float b = hash(i + vec2(1.0, 0.0));
+                float c = hash(i + vec2(0.0, 1.0));
+                float d = hash(i + vec2(1.0, 1.0));
+
+                return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+            }
+
+            void main() {
+                vec2 screenUV = (vScreenPos.xy / vScreenPos.w) * 0.5 + 0.5;
+                vec3 viewDir = normalize(cameraPosition - vWorldPosition);
+                vec3 normal = normalize(vNormal);
+
+                vec2 refractOffset = normal.xy * 0.15;
+                float aberr = 0.040;
+                vec2 uvR = screenUV + refractOffset * (1.0 + aberr);
+                vec2 uvG = screenUV + refractOffset;
+                vec2 uvB = screenUV + refractOffset * (1.0 - aberr);
+
+                float r = texture2D(uBackground, uvR).r;
+                float g = texture2D(uBackground, uvG).g;
+                float b = texture2D(uBackground, uvB).b;
+                vec3 refractedColor = vec3(r, g, b);
+
+                float fresnel = pow(1.0 - abs(dot(viewDir, normal)), 0.5);
+
+                vec2 noiseUV = vWorldPosition.xy * 5.5 + vWorldPosition.z * 2.0;
+                float noisePattern = noise(noiseUV + uTime * 0.1);
+
+                float angle = dot(normal, vec3(0.0, 1.0, 0.0)) * 0.5 + 0.5;
+                float viewAngle = dot(viewDir, vec3(1.0, 0.0, 0.0)) * 0.5 + 0.5;
+                float timeShift = uTime * 0.5;
+
+                vec3 color1 = vec3(0.52, 1.00, 0.00);
+                vec3 color2 = vec3(0.52, 1.00, 0.00);
+                vec3 color3 = vec3(0.52, 1.00, 0.00);
+
+                float t1 = sin(angle * 6.28 + timeShift + viewAngle * 3.0) * 0.5 + 0.5;
+                float t2 = sin(angle * 6.28 + timeShift + 2.09 + viewAngle * 2.0) * 0.5 + 0.5;
+
+                vec3 holoColor = mix(color1, color2, t1);
+                holoColor = mix(holoColor, color3, t2);
+                holoColor *= 0.75 + noisePattern * 0.50;
+
+                vec3 edgeGlow = vec3(1.00, 1.00, 1.00) * pow(fresnel, 12.0) * 0.0;
+
+                vec3 finalColor = refractedColor * 0.00 + holoColor * fresnel * 0.60;
+                finalColor += edgeGlow;
+
+                float alpha = 0.00 + fresnel * 0.50;
+
+                gl_FragColor = vec4(finalColor, alpha);
+            }
+        `;
+
+        // Initialize Three.js scene
+        const canvas = document.getElementById('preloader-canvas');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+
+        const renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
+            antialias: true,
+            alpha: true
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setClearColor(0x000000, 0);
+
+        // Create background render target for refraction
+        const bgRenderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight);
+
+        // Background gradient
+        const bgScene = new THREE.Scene();
+        const bgCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+        const bgMaterial = new THREE.ShaderMaterial({
+            uniforms: {
+                uTime: { value: 0 }
+            },
+            vertexShader: `
+                varying vec2 vUv;
+                void main() {
+                    vUv = uv;
+                    gl_Position = vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                uniform float uTime;
+                varying vec2 vUv;
+                void main() {
+                    vec3 color1 = vec3(0.02, 0.02, 0.02);
+                    vec3 color2 = vec3(0.05, 0.05, 0.05);
+                    float gradient = vUv.y * 0.5 + 0.25;
+                    gradient += sin(vUv.x * 3.0 + uTime * 0.2) * 0.05;
+                    vec3 color = mix(color1, color2, gradient);
+                    gl_FragColor = vec4(color, 1.0);
+                }
+            `
+        });
+        const bgPlane = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), bgMaterial);
+        bgScene.add(bgPlane);
+
+        // Holographic material
+        const holographicMaterial = new THREE.ShaderMaterial({
+            uniforms: {
+                uTime: { value: 0 },
+                uBackground: { value: bgRenderTarget.texture },
+                uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
+            },
+            vertexShader: holographicVertexShader,
+            fragmentShader: holographicFragmentShader,
+            transparent: true,
+            side: THREE.DoubleSide
+        });
+
+        // Setup DRACO loader
+        const dracoLoader = new DRACOLoader();
+        dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
+
+        const gltfLoader = new GLTFLoader();
+        gltfLoader.setDRACOLoader(dracoLoader);
+
+        let model = null;
+        let modelLoaded = false;
+
+        // Load the factory GLB model
+        gltfLoader.load(
+            'factory.glb',
+            (gltf) => {
+                model = gltf.scene;
+
+                // Apply holographic material to all meshes
+                model.traverse((child) => {
+                    if (child.isMesh) {
+                        child.material = holographicMaterial;
+                    }
+                });
+
+                // Center and scale the model
+                const box = new THREE.Box3().setFromObject(model);
+                const center = box.getCenter(new THREE.Vector3());
+                const size = box.getSize(new THREE.Vector3());
+
+                model.position.sub(center);
+
+                // Scale to fit nicely in view
+                const maxDim = Math.max(size.x, size.y, size.z);
+                const scale = 1.25 / maxDim;
+                model.scale.setScalar(scale);
+
+                scene.add(model);
+                modelLoaded = true;
+
+                // Dispatch event to signal model is loaded
+                window.dispatchEvent(new CustomEvent('preloaderModelLoaded'));
+            },
+            (progress) => {
+                // Progress callback
+                const percent = (progress.loaded / progress.total) * 100;
+                window.dispatchEvent(new CustomEvent('preloaderProgress', { detail: percent }));
+            },
+            (error) => {
+                console.error('Error loading model:', error);
+            }
+        );
+
+        // Add subtle ambient light
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+
+        // Animation loop
+        let animationId;
+        const clock = new THREE.Clock();
+
+        function animate() {
+            animationId = requestAnimationFrame(animate);
+
+            const elapsedTime = clock.getElapsedTime();
+
+            // Update shader uniforms
+            holographicMaterial.uniforms.uTime.value = elapsedTime;
+            bgMaterial.uniforms.uTime.value = elapsedTime;
+
+            // Rotate model slowly
+            if (model) {
+                model.rotation.y = elapsedTime * 0.15;
+                model.rotation.x = Math.sin(elapsedTime * 0.1) * 0.05;
+            }
+
+            // Render background to texture (for refraction effect)
+            renderer.setRenderTarget(bgRenderTarget);
+            renderer.render(bgScene, bgCamera);
+
+            // Render main scene (transparent, CSS background shows through)
+            renderer.setRenderTarget(null);
+            renderer.clear();
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Handle resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            bgRenderTarget.setSize(window.innerWidth, window.innerHeight);
+            holographicMaterial.uniforms.uResolution.value.set(window.innerWidth, window.innerHeight);
+        });
+
+        // Cleanup function for when preloader is done
+        window.cleanupPreloader3D = function() {
+            cancelAnimationFrame(animationId);
+            renderer.dispose();
+            bgRenderTarget.dispose();
+            holographicMaterial.dispose();
+            bgMaterial.dispose();
+            dracoLoader.dispose();
+        };
+    </script>
+
+    <!-- Zoom Section 3D Model -->
+    <script type="module">
+        import * as THREE from 'three';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+        import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+
+        // Wait for DOM and GSAP to be ready
+        document.addEventListener('DOMContentLoaded', () => {
+            // Holographic shaders (same as preloader)
+            const holographicVertexShader = `
+                varying vec3 vNormal;
+                varying vec3 vWorldPosition;
+                varying vec4 vScreenPos;
+
+                void main() {
+                    vNormal = normalize(normalMatrix * normal);
+                    vec4 worldPos = modelMatrix * vec4(position, 1.0);
+                    vWorldPosition = worldPos.xyz;
+                    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+                    gl_Position = projectionMatrix * mvPosition;
+                    vScreenPos = gl_Position;
+                }
+            `;
+
+            const holographicFragmentShader = `
+                uniform float uTime;
+                uniform sampler2D uBackground;
+                uniform vec2 uResolution;
+
+                varying vec3 vNormal;
+                varying vec3 vWorldPosition;
+                varying vec4 vScreenPos;
+
+                float hash(vec2 p) {
+                    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+                }
+
+                float noise(vec2 p) {
+                    vec2 i = floor(p);
+                    vec2 f = fract(p);
+                    f = f * f * (3.0 - 2.0 * f);
+
+                    float a = hash(i);
+                    float b = hash(i + vec2(1.0, 0.0));
+                    float c = hash(i + vec2(0.0, 1.0));
+                    float d = hash(i + vec2(1.0, 1.0));
+
+                    return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+                }
+
+                void main() {
+                    vec2 screenUV = (vScreenPos.xy / vScreenPos.w) * 0.5 + 0.5;
+                    vec3 viewDir = normalize(cameraPosition - vWorldPosition);
+                    vec3 normal = normalize(vNormal);
+
+                    vec2 refractOffset = normal.xy * 0.15;
+                    float aberr = 0.040;
+                    vec2 uvR = screenUV + refractOffset * (1.0 + aberr);
+                    vec2 uvG = screenUV + refractOffset;
+                    vec2 uvB = screenUV + refractOffset * (1.0 - aberr);
+
+                    float r = texture2D(uBackground, uvR).r;
+                    float g = texture2D(uBackground, uvG).g;
+                    float b = texture2D(uBackground, uvB).b;
+                    vec3 refractedColor = vec3(r, g, b);
+
+                    float fresnel = pow(1.0 - abs(dot(viewDir, normal)), 0.5);
+
+                    vec2 noiseUV = vWorldPosition.xy * 5.5 + vWorldPosition.z * 2.0;
+                    float noisePattern = noise(noiseUV + uTime * 0.1);
+
+                    float angle = dot(normal, vec3(0.0, 1.0, 0.0)) * 0.5 + 0.5;
+                    float viewAngle = dot(viewDir, vec3(1.0, 0.0, 0.0)) * 0.5 + 0.5;
+                    float timeShift = uTime * 0.5;
+
+                    vec3 color1 = vec3(0.52, 1.00, 0.00);
+                    vec3 color2 = vec3(0.52, 1.00, 0.00);
+                    vec3 color3 = vec3(0.52, 1.00, 0.00);
+
+                    float t1 = sin(angle * 6.28 + timeShift + viewAngle * 3.0) * 0.5 + 0.5;
+                    float t2 = sin(angle * 6.28 + timeShift + 2.09 + viewAngle * 2.0) * 0.5 + 0.5;
+
+                    vec3 holoColor = mix(color1, color2, t1);
+                    holoColor = mix(holoColor, color3, t2);
+                    holoColor *= 0.75 + noisePattern * 0.50;
+
+                    vec3 edgeGlow = vec3(1.00, 1.00, 1.00) * pow(fresnel, 12.0) * 0.0;
+
+                    vec3 finalColor = refractedColor * 0.00 + holoColor * fresnel * 0.60;
+                    finalColor += edgeGlow;
+
+                    float alpha = 0.00 + fresnel * 0.50;
+
+                    gl_FragColor = vec4(finalColor, alpha);
+                }
+            `;
+
+            // Initialize zoom section Three.js scene
+            const canvas = document.getElementById('zoom-model-canvas');
+            if (!canvas) return;
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 5;
+
+            const renderer = new THREE.WebGLRenderer({
+                canvas: canvas,
+                antialias: true,
+                alpha: true
+            });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            // Use higher pixel ratio for better quality when scaled
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio * 2, 4));
+            renderer.setClearColor(0x000000, 0);
+
+            // Background render target for refraction (higher res)
+            const pixelRatio = Math.min(window.devicePixelRatio * 2, 4);
+            const bgRenderTarget = new THREE.WebGLRenderTarget(
+                window.innerWidth * pixelRatio,
+                window.innerHeight * pixelRatio
+            );
+
+            // Background scene
+            const bgScene = new THREE.Scene();
+            const bgCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+            const bgMaterial = new THREE.ShaderMaterial({
+                uniforms: {
+                    uTime: { value: 0 }
+                },
+                vertexShader: `
+                    varying vec2 vUv;
+                    void main() {
+                        vUv = uv;
+                        gl_Position = vec4(position, 1.0);
+                    }
+                `,
+                fragmentShader: `
+                    uniform float uTime;
+                    varying vec2 vUv;
+                    void main() {
+                        vec3 color1 = vec3(0.02, 0.02, 0.02);
+                        vec3 color2 = vec3(0.05, 0.05, 0.05);
+                        float gradient = vUv.y * 0.5 + 0.25;
+                        gradient += sin(vUv.x * 3.0 + uTime * 0.2) * 0.05;
+                        vec3 color = mix(color1, color2, gradient);
+                        gl_FragColor = vec4(color, 1.0);
+                    }
+                `
+            });
+            const bgPlane = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), bgMaterial);
+            bgScene.add(bgPlane);
+
+            // Holographic material
+            const holographicMaterial = new THREE.ShaderMaterial({
+                uniforms: {
+                    uTime: { value: 0 },
+                    uBackground: { value: bgRenderTarget.texture },
+                    uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
+                },
+                vertexShader: holographicVertexShader,
+                fragmentShader: holographicFragmentShader,
+                transparent: true,
+                side: THREE.DoubleSide
+            });
+
+            // Setup DRACO loader
+            const dracoLoader = new DRACOLoader();
+            dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
+
+            const gltfLoader = new GLTFLoader();
+            gltfLoader.setDRACOLoader(dracoLoader);
+
+            let model = null;
+            let baseScale = 1;
+
+            // Load the factory GLB model
+            gltfLoader.load(
+                'factory.glb',
+                (gltf) => {
+                    model = gltf.scene;
+
+                    // Apply holographic material to all meshes
+                    model.traverse((child) => {
+                        if (child.isMesh) {
+                            child.material = holographicMaterial;
+                        }
+                    });
+
+                    // Center and scale the model
+                    const box = new THREE.Box3().setFromObject(model);
+                    const center = box.getCenter(new THREE.Vector3());
+                    const size = box.getSize(new THREE.Vector3());
+
+                    model.position.sub(center);
+
+                    // Scale to fit nicely - slightly larger than preloader
+                    const maxDim = Math.max(size.x, size.y, size.z);
+                    baseScale = 1.5 / maxDim;
+                    model.scale.setScalar(baseScale);
+
+                    // Tilt model back slightly to show the mouse/arch part better
+                    model.rotation.x = -0.08;
+
+                    // Move model down slightly
+                    model.position.y -= 0.05;
+
+                    scene.add(model);
+
+                    // Signal that zoom model is ready
+                    window.zoomModel = model;
+                    window.zoomModelBaseScale = baseScale;
+                    window.dispatchEvent(new CustomEvent('zoomModelLoaded'));
+                },
+                undefined,
+                (error) => {
+                    console.error('Error loading zoom model:', error);
+                }
+            );
+
+            // Ambient light
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+
+            // Animation loop
+            const clock = new THREE.Clock();
+
+            function animate() {
+                requestAnimationFrame(animate);
+
+                const elapsedTime = clock.getElapsedTime();
+
+                // Update shader uniforms
+                holographicMaterial.uniforms.uTime.value = elapsedTime;
+                bgMaterial.uniforms.uTime.value = elapsedTime;
+
+                // Keep model facing forward (no rotation)
+
+                // Render background to texture
+                renderer.setRenderTarget(bgRenderTarget);
+                renderer.render(bgScene, bgCamera);
+
+                // Render main scene
+                renderer.setRenderTarget(null);
+                renderer.clear();
+                renderer.render(scene, camera);
+            }
+
+            animate();
+
+            // Handle resize
+            window.addEventListener('resize', () => {
+                const newPixelRatio = Math.min(window.devicePixelRatio * 2, 4);
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                bgRenderTarget.setSize(window.innerWidth * newPixelRatio, window.innerHeight * newPixelRatio);
+                holographicMaterial.uniforms.uResolution.value.set(window.innerWidth, window.innerHeight);
+            });
+        });
+    </script>
+
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // Animation constants
         const CURSOR_EASING = 0.15;
@@ -2155,6 +2761,30 @@
         const MAGNETIC_STRENGTH = 0.3;
 
         gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+        // Initialize Lenis smooth scroll
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            orientation: 'vertical',
+            gestureOrientation: 'vertical',
+            smoothWheel: true,
+            wheelMultiplier: 1,
+            touchMultiplier: 2,
+            infinite: false,
+        });
+
+        // Integrate Lenis with GSAP ScrollTrigger
+        lenis.on('scroll', ScrollTrigger.update);
+
+        gsap.ticker.add((time) => {
+            lenis.raf(time * 1000);
+        });
+
+        gsap.ticker.lagSmoothing(0);
+
+        // Stop Lenis during preloader
+        lenis.stop();
 
         // Mobile Menu
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
@@ -2212,17 +2842,83 @@
         // Set chars hidden initially
         gsap.set('.hero-title .char', { opacity: 0, y: 100, rotateX: -90 });
 
-        // Preloader
-        const preloaderTl = gsap.timeline();
-        preloaderTl
-            .to('.preloader-logo', { opacity: 1, duration: 0.5 })
-            .to('.preloader-progress', { width: '100%', duration: 1.5, ease: 'power2.inOut' })
-            .to('.preloader', { yPercent: -100, duration: 0.8, ease: 'power3.inOut' })
-            .set('.preloader', { display: 'none' })
-            .add(() => {
-                runHeroAnimations();
-                ScrollTrigger.refresh();
+        // Scroll to top on page load/refresh
+        window.scrollTo(0, 0);
+        if (window.history.scrollRestoration) {
+            window.history.scrollRestoration = 'manual';
+        }
+
+        // Preloader - wait for 3D model to load
+        let modelReady = false;
+        let minTimeElapsed = false;
+        let currentPercent = 0;
+        const percentEl = document.querySelector('.preloader-percent');
+
+        // Listen for model load event
+        window.addEventListener('preloaderModelLoaded', () => {
+            modelReady = true;
+            checkPreloaderReady();
+        });
+
+        // Listen for loading progress
+        window.addEventListener('preloaderProgress', (e) => {
+            const percent = Math.round(e.detail);
+            const displayPercent = Math.min(percent, 90);
+            gsap.to('.preloader-progress', { width: `${displayPercent}%`, duration: 0.3 });
+            animatePercent(displayPercent);
+        });
+
+        // Animate percentage counter
+        function animatePercent(target) {
+            gsap.to({ val: currentPercent }, {
+                val: target,
+                duration: 0.3,
+                ease: 'power2.out',
+                onUpdate: function() {
+                    currentPercent = Math.round(this.targets()[0].val);
+                    if (percentEl) percentEl.textContent = currentPercent + '%';
+                }
             });
+        }
+
+        // Minimum display time for the preloader
+        setTimeout(() => {
+            minTimeElapsed = true;
+            checkPreloaderReady();
+        }, 2000);
+
+        function checkPreloaderReady() {
+            if (modelReady && minTimeElapsed) {
+                completePreloader();
+            }
+        }
+
+        function completePreloader() {
+            const preloaderTl = gsap.timeline();
+            preloaderTl
+                .to('.preloader-progress', { width: '100%', duration: 0.3, ease: 'power2.out' })
+                .add(() => animatePercent(100))
+                .to('.preloader-ui', { opacity: 0, y: -20, duration: 0.3 }, '+=0.3')
+                .to('.preloader', { yPercent: -100, duration: 0.8, ease: 'power3.inOut' })
+                .add(() => {
+                    document.body.classList.remove('loading');
+                    lenis.start();
+                    if (window.cleanupPreloader3D) {
+                        window.cleanupPreloader3D();
+                    }
+                    runHeroAnimations();
+                    ScrollTrigger.refresh();
+                })
+                .set('.preloader', { display: 'none' });
+        }
+
+        // Fallback if model fails to load
+        setTimeout(() => {
+            if (!modelReady) {
+                modelReady = true;
+                checkPreloaderReady();
+            }
+        }, 8000);
 
         function runHeroAnimations() {
 
@@ -2337,9 +3033,14 @@
         });
         
         zoomTl
-            .fromTo('.zoom-text', 
+            .fromTo('.zoom-text',
                 { scale: 1, opacity: 0.3 },
                 { scale: 15, opacity: 0, duration: 1, ease: 'none' }
+            )
+            .fromTo('#zoom-model-canvas',
+                { opacity: 1 },
+                { opacity: 0, duration: 1, ease: 'none' },
+                0 // Same timing as zoom-text, fade only (no zoom to avoid pixelation)
             )
             .fromTo('.zoom-content',
                 { scale: 0.8, opacity: 0 },
@@ -2568,29 +3269,21 @@
             }
         });
 
-        // Smooth scroll for nav
+        // Smooth scroll for nav (using Lenis)
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
-                    gsap.to(window, {
-                        duration: 1.5,
-                        scrollTo: { y: target, offsetY: 0 },
-                        ease: 'power3.inOut'
-                    });
+                    lenis.scrollTo(target, { duration: 1.5 });
                 }
             });
         });
 
-        // Logo click scrolls to top
+        // Logo click scrolls to top (using Lenis)
         document.getElementById('navLogo').addEventListener('click', function(e) {
             e.preventDefault();
-            gsap.to(window, {
-                duration: 1.5,
-                scrollTo: { y: 0, offsetY: 0 },
-                ease: 'power3.inOut'
-            });
+            lenis.scrollTo(0, { duration: 1.5 });
         });
 
         // Nav scroll effect - simple like MocapWork
